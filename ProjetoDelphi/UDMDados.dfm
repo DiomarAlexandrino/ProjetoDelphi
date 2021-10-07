@@ -14,7 +14,6 @@ object DMDados: TDMDados
     Top = 32
   end
   object FDQClientes: TFDQuery
-    Active = True
     Connection = FDConexao
     SQL.Strings = (
       'select * from clientes')
@@ -111,25 +110,45 @@ object DMDados: TDMDados
   object FDQPedido: TFDQuery
     Connection = FDConexao
     SQL.Strings = (
-      'SELECT nome'
-      'FROM pedidos'
-      'INNER JOIN clientes'
-      'ON pedidos.fk_cliente= clientes.codigo_cli'
-      'where nome like :nome;')
+      ''
+      '')
     Left = 152
     Top = 144
-    ParamData = <
-      item
-        Name = 'NOME'
-        DataType = ftString
-        ParamType = ptInput
-        Size = 70
-        Value = Null
-      end>
   end
   object DSPedidos: TDataSource
     DataSet = FDQPedido
     Left = 224
     Top = 144
+  end
+  object FDQPedidoQtd: TFDQuery
+    Connection = FDConexao
+    SQL.Strings = (
+      'SELECT *'
+      'FROM pedidos')
+    Top = 65480
+  end
+  object DSPedidoQTD: TDataSource
+    DataSet = FDQPedido
+    Left = 224
+    Top = 200
+  end
+  object FDQPedQtd: TFDQuery
+    Connection = FDConexao
+    SQL.Strings = (
+      'select'
+      'c.nome'
+      ',count(pe.fk_cliente) as qtd_pedidos'
+      'from clientes c'
+      'inner join pedidos pe'
+      'on pe.fk_cliente = c.codigo_cli'
+      'group by c.nome')
+    Left = 144
+    Top = 200
+    object StringField1: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 70
+    end
   end
 end

@@ -3,7 +3,7 @@ object FormPrincipal: TFormPrincipal
   Top = 0
   Caption = 'FormPrincipal'
   ClientHeight = 340
-  ClientWidth = 548
+  ClientWidth = 878
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,10 +17,11 @@ object FormPrincipal: TFormPrincipal
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 548
+    Width = 878
     Height = 105
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 548
     object Label1: TLabel
       Left = 56
       Top = 14
@@ -28,9 +29,22 @@ object FormPrincipal: TFormPrincipal
       Height = 13
       Caption = 'Rela'#231#227'o de Pedidos por:'
     end
+    object Label2: TLabel
+      Left = 16
+      Top = 80
+      Width = 115
+      Height = 13
+      Caption = 'Quantidade de Pedidos:'
+    end
+    object LBQtdPedidos: TLabel
+      Left = 137
+      Top = 80
+      Width = 24
+      Height = 13
+    end
     object EdPesquisaPedido: TEdit
-      Left = 357
-      Top = 11
+      Left = 389
+      Top = 14
       Width = 92
       Height = 21
       TabOrder = 0
@@ -39,28 +53,30 @@ object FormPrincipal: TFormPrincipal
     object RGPesquisa: TRadioGroup
       Left = 200
       Top = 11
-      Width = 151
-      Height = 54
+      Width = 183
+      Height = 89
       Caption = 'Pesquisar'
       Items.Strings = (
         'Nome do Cliente'
-        'C'#243'digo do CLiente')
+        'C'#243'digo do CLiente'
+        'Qtd Pedidos por C'#243'digo Cliente'
+        'Soma de Pedidos por Clientes')
       TabOrder = 1
+      OnClick = RGPesquisaClick
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 105
-    Width = 548
+    Width = 878
     Height = 235
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 41
-    ExplicitHeight = 299
+    ExplicitWidth = 548
     object DBGridPedidos: TDBGrid
       Left = 1
       Top = 1
-      Width = 546
+      Width = 876
       Height = 111
       Align = alClient
       DataSource = DMDados.DSPedidos
@@ -74,11 +90,11 @@ object FormPrincipal: TFormPrincipal
     object Panel3: TPanel
       Left = 1
       Top = 112
-      Width = 546
+      Width = 876
       Height = 122
       Align = alBottom
       TabOrder = 1
-      ExplicitTop = 176
+      ExplicitWidth = 546
     end
   end
   object MainMenu1: TMainMenu

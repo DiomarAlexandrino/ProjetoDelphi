@@ -32,10 +32,8 @@ type
     FDQProdutosCODIGO_PROD: TSmallintField;
     FDQPedido: TFDQuery;
     DSPedidos: TDataSource;
-    FDQPedidoQtd: TFDQuery;
     DSPedidoQTD: TDataSource;
     FDQPedQtd: TFDQuery;
-    StringField1: TStringField;
   private
     { Private declarations }
   public

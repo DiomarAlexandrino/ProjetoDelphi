@@ -120,13 +120,6 @@ object DMDados: TDMDados
     Left = 224
     Top = 144
   end
-  object FDQPedidoQtd: TFDQuery
-    Connection = FDConexao
-    SQL.Strings = (
-      'SELECT *'
-      'FROM pedidos')
-    Top = 65480
-  end
   object DSPedidoQTD: TDataSource
     DataSet = FDQPedido
     Left = 224
@@ -135,20 +128,8 @@ object DMDados: TDMDados
   object FDQPedQtd: TFDQuery
     Connection = FDConexao
     SQL.Strings = (
-      'select'
-      'c.nome'
-      ',count(pe.fk_cliente) as qtd_pedidos'
-      'from clientes c'
-      'inner join pedidos pe'
-      'on pe.fk_cliente = c.codigo_cli'
-      'group by c.nome')
+      '')
     Left = 144
     Top = 200
-    object StringField1: TStringField
-      FieldName = 'NOME'
-      Origin = 'NOME'
-      Required = True
-      Size = 70
-    end
   end
 end

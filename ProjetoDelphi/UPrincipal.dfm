@@ -21,7 +21,6 @@ object FormPrincipal: TFormPrincipal
     Height = 105
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 548
     object Label1: TLabel
       Left = 56
       Top = 14
@@ -29,21 +28,8 @@ object FormPrincipal: TFormPrincipal
       Height = 13
       Caption = 'Rela'#231#227'o de Pedidos por:'
     end
-    object Label2: TLabel
-      Left = 16
-      Top = 80
-      Width = 115
-      Height = 13
-      Caption = 'Quantidade de Pedidos:'
-    end
-    object LBQtdPedidos: TLabel
-      Left = 137
-      Top = 80
-      Width = 24
-      Height = 13
-    end
     object EdPesquisaPedido: TEdit
-      Left = 389
+      Left = 413
       Top = 14
       Width = 92
       Height = 21
@@ -72,7 +58,6 @@ object FormPrincipal: TFormPrincipal
     Height = 235
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 548
     object DBGridPedidos: TDBGrid
       Left = 1
       Top = 1
@@ -94,7 +79,19 @@ object FormPrincipal: TFormPrincipal
       Height = 122
       Align = alBottom
       TabOrder = 1
-      ExplicitWidth = 546
+      object Label2: TLabel
+        Left = 9
+        Top = 24
+        Width = 88
+        Height = 25
+        Caption = 'Total dos Pedidos:'
+      end
+      object LBTotalPedidos: TLabel
+        Left = 104
+        Top = 24
+        Width = 129
+        Height = 17
+      end
     end
   end
   object MainMenu1: TMainMenu

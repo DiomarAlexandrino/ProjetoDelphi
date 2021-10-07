@@ -21,7 +21,7 @@ type
     Panel3: TPanel;
     RGPesquisa: TRadioGroup;
     Label2: TLabel;
-    LBQtdPedidos: TLabel;
+    LBTotalPedidos: TLabel;
     procedure Clientes1Click(Sender: TObject);
     procedure Produtos1Click(Sender: TObject);
     procedure EdPesquisaPedidoChange(Sender: TObject);
@@ -47,6 +47,10 @@ begin
 end;
 
 procedure TFormPrincipal.EdPesquisaPedidoChange(Sender: TObject);
+var
+subTotal : double;
+ Total: Double;
+ sql1 :String;
 begin
       DMDados.FDQPedido.Close;
   // DMDados.FDQPedido.Params.ClearValues() ;
@@ -84,26 +88,51 @@ begin
         end
       ELSE  if(RGPesquisa.ItemIndex = 3)  THEN
       begin
+              //total geral
+
+             // sql1:= 'select sum(preco_venda) As total '
+           //   + ' from produtos'
+            //   ;
+            //     DMDados.FDQPedQtd.Close;
+            //    DMDados.FDQPedQtd.SQL.Add(sql1);
+            //     DMDados.FDQPedQtd.Open;
+            //     Total := DMDados.FDQPedQtd.FieldByName('total').AsFloat;
+            //    LBTotalPedidos.Caption :=(FloatToStr(Total));
+            //    DMDados.FDQPedQtd.Close;
+
+
+
 
          DMDados.FDQPedido.SQL.Clear;
          DMDados.FDQPedido.Close;
-         DMDados.FDQPedido.SQL.Add( 'select clientes.nome '
-         + ' , sum(itens_pedidos.qtd * 2) as soma from itens_pedidos  '
-         + ' inner join pedidos on pedidos.fk_cliente = clientes.codigo_cli  '
-         + ' inner join itens_pedidos on  itens_pedidos.pedido   = pedidos.codigo_ped '  );
-        // DMDados.FDQPedido.SQL.Add( 'where codigo_cli like '  );
-        // DMDados.FDQPedido.SQL.Add( ' '+ QuotedStr('%' + EdPesquisaPedido.Text + '%'));
-         DMDados.FDQPedido.SQL.Add('group by clientes.nome'  );
+         DMDados.FDQPedido.SQL.Add('select clientes.codigo_cli, clientes.nome '
+        + ' , itens_pedidos.pedido , itens_pedidos.quantidade , produtos.preco_venda '
+        + ' , sum(itens_pedidos.quantidade) as qtd_itens  ,  '
+
+        + ' (itens_pedidos.quantidade * produtos.preco_venda) AS SUB_TOTAL '
+        + ' sum(SUB_TOTAL) As total  ,'
+        + ' from pedidos , clientes ,itens_pedidos ,produtos '
+        );
+        DMDados.FDQPedido.SQL.Add( 'where clientes.codigo_cli = pedidos.fk_cliente '
+        + '    and pedidos.codigo_ped   = itens_pedidos.pedido '
+        + '    and produtos.codigo_prod =  itens_pedidos.produto '
+        + '   and  clientes.codigo_cli like  ' );
+
+         DMDados.FDQPedido.SQL.Add( ' '+ QuotedStr('%' + EdPesquisaPedido.Text + '%'));
+         DMDados.FDQPedido.SQL.Add( ' group by  '
+         + ' clientes.codigo_cli,   '
+         +' clientes.nome ,     '
+         + ' itens_pedidos.pedido ,   '
+         + ' itens_pedidos.quantidade,  '
+         + ' produtos.preco_venda;    ');
+
+        // DMDados.FDQPedido.SQL.Add('group by clientes.nome'  );
+
+
 
       end;
 
-
-
-
        DMDados.FDQPedido.Open();
-
-        //quantidade registros
-    
 
 end;
 
@@ -119,9 +148,7 @@ begin
       EdPesquisaPedido.Clear;
       DMDados.FDQPedido.Close;
       DMDados.FDQPedido.SQL.Clear;
-      DMDados.FDQPedido.SQL.Add('SELECT * ');
-      DMDados.FDQPedido.SQL.Add('FROM pedidos  INNER JOIN clientes '+
-      'ON pedidos.fk_cliente = clientes.codigo_cli ' );
+      
 end;
 
 end.

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/10/06 11:53:58.000.870,=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/10/06 11:59:06.000.551,=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2021/10/06 12:00:06.000.324,C:\Users\Diomar\Documents\ProjetoDelphi\UDMDados.dfm=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>2021/10/06 12:00:06.000.324,C:\Users\Diomar\Documents\ProjetoDelphi\UDMDados.pas=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2021/10/06 12:00:34.000.761,C:\Users\Diomar\Documents\ProjetoDelphi\UCadastroClientes.pas=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/10/06 12:00:34.000.761,C:\Users\Diomar\Documents\ProjetoDelphi\UCadastroClientes.dfm=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2021/10/06 12:00:43.000.919,C:\Users\Diomar\Documents\ProjetoDelphi\ProjetoVisual.dproj=C:\Users\Diomar\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2021/10/06 15:06:21.000.898,=C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/10/06 15:06:41.000.746,C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.pas=C:\Users\Diomar\Documents\ProjetoDelphi\UCadastroProdutos.pas</Transaction>
+    <Transaction>2021/10/06 15:06:41.000.746,C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.dfm=C:\Users\Diomar\Documents\ProjetoDelphi\UCadastroProdutos.dfm</Transaction>
+    <Transaction>2021/10/06 15:20:48.000.265,=C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/10/06 15:25:10.000.165,C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.pas=C:\Users\Diomar\Documents\ProjetoDelphi\UPrincipal.pas</Transaction>
+    <Transaction>2021/10/06 15:25:10.000.165,C:\Users\Diomar\Documents\ProjetoDelphi\Unit1.dfm=C:\Users\Diomar\Documents\ProjetoDelphi\UPrincipal.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

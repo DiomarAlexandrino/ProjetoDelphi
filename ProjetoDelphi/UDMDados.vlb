@@ -1,0 +1,16 @@
+﻿[FDConexao]
+Coordinates=224,1,83,36
+
+[DSClientes]
+Coordinates=107,1,79,58
+Visible=True
+
+[FDGUIxWaitCursor1]
+Coordinates=205,56,132,36
+
+[FDQClientes]
+Coordinates=10,10,88,58
+
+[]
+Coordinates=88,77,91,36
+

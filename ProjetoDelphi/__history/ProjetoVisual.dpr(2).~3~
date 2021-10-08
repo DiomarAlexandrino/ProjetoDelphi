@@ -1,0 +1,20 @@
+program ProjetoVisual;
+
+uses
+  Vcl.Forms,
+  UCadastroClientes in 'UCadastroClientes.pas' {FormCadCliente},
+  UDMDados in 'UDMDados.pas' {DMDados: TDataModule},
+  UCadastroProdutos in 'UCadastroProdutos.pas' {FormCadProduto},
+  UPrincipal in 'UPrincipal.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFormCadCliente, FormCadCliente);
+  Application.CreateForm(TDMDados, DMDados);
+  Application.CreateForm(TFormCadProduto, FormCadProduto);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

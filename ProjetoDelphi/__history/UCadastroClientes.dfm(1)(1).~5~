@@ -1,0 +1,66 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 508
+  ClientWidth = 591
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 591
+    Height = 57
+    Align = alTop
+    TabOrder = 0
+    object DBNavigatorCli: TDBNavigator
+      Left = 1
+      Top = 1
+      Width = 589
+      Height = 55
+      DataSource = DMDados.DSClientes
+      VisibleButtons = [nbInsert, nbDelete, nbEdit, nbPost, nbCancel, nbRefresh]
+      Align = alClient
+      TabOrder = 0
+      ExplicitLeft = 2
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 57
+    Width = 591
+    Height = 451
+    Align = alClient
+    TabOrder = 1
+    object Panel3: TPanel
+      Left = 1
+      Top = 216
+      Width = 589
+      Height = 234
+      Align = alBottom
+      TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 222
+    end
+    object DBGridClientes: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 589
+      Height = 215
+      Align = alClient
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+  end
+end

@@ -23,32 +23,75 @@ object FormPrincipal: TFormPrincipal
     TabOrder = 0
     object Label1: TLabel
       Left = 56
-      Top = 14
-      Width = 116
-      Height = 13
+      Top = 9
+      Width = 139
+      Height = 16
       Caption = 'Rela'#231#227'o de Pedidos por:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 471
+      Top = 21
+      Width = 73
+      Height = 16
+      Caption = 'Pesquisa:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
     object EdPesquisaPedido: TEdit
-      Left = 413
-      Top = 14
+      Left = 471
+      Top = 43
       Width = 92
       Height = 21
       TabOrder = 0
       OnChange = EdPesquisaPedidoChange
     end
-    object RGPesquisa: TRadioGroup
-      Left = 200
-      Top = 11
-      Width = 183
-      Height = 89
-      Caption = 'Pesquisar'
-      Items.Strings = (
-        'Nome do Cliente'
-        'C'#243'digo do CLiente'
-        'Qtd Pedidos por C'#243'digo Cliente'
-        'Soma de Pedidos por Clientes')
+    object PageControl1: TPageControl
+      Left = 201
+      Top = 1
+      Width = 264
+      Height = 99
+      ActivePage = TabSheet1
       TabOrder = 1
-      OnClick = RGPesquisaClick
+      object TabSheet1: TTabSheet
+        Caption = 'Pesquisa 1'
+        object RGPesquisa: TRadioGroup
+          Left = 33
+          Top = -14
+          Width = 223
+          Height = 85
+          Caption = 'Pesquisar'
+          Items.Strings = (
+            'Nome do Cliente'
+            'C'#243'digo do CLiente'
+            'Qtd Pedidos por C'#243'digo Cliente'
+            'Soma de Pedidos s/desconto'
+            'Lucro de Pedidos pendentes')
+          TabOrder = 0
+          OnClick = RGPesquisaClick
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'Pesquisa 2'
+        ImageIndex = 1
+        object RadioGroup1: TRadioGroup
+          Left = 16
+          Top = 8
+          Width = 185
+          Height = 60
+          Caption = 'RadioGroup1'
+          TabOrder = 0
+        end
+      end
     end
   end
   object Panel2: TPanel
@@ -80,17 +123,49 @@ object FormPrincipal: TFormPrincipal
       Align = alBottom
       TabOrder = 1
       object Label2: TLabel
-        Left = 9
-        Top = 24
-        Width = 88
-        Height = 25
-        Caption = 'Total dos Pedidos:'
+        Left = 6
+        Top = 56
+        Width = 191
+        Height = 18
+        Caption = 'Cliente que gera maior Lucro:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
       end
-      object LBTotalPedidos: TLabel
-        Left = 104
+      object LBMaiorReceita: TLabel
+        Left = 213
         Top = 24
-        Width = 129
-        Height = 17
+        Width = 108
+        Height = 13
+      end
+      object Label4: TLabel
+        Left = 6
+        Top = 24
+        Width = 201
+        Height = 18
+        Caption = '1 Produto Com maior Receita: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 361
+        Top = 24
+        Width = 201
+        Height = 18
+        Caption = '2 Produto Com maior Receita: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
       end
     end
   end

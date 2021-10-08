@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Data.DB,
-  Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls;
+  Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.ComCtrls;
 
 type
   TFormPrincipal = class(TForm)
@@ -19,9 +19,16 @@ type
     Panel2: TPanel;
     DBGridPedidos: TDBGrid;
     Panel3: TPanel;
-    RGPesquisa: TRadioGroup;
     Label2: TLabel;
-    LBTotalPedidos: TLabel;
+    LBMaiorReceita: TLabel;
+    Label3: TLabel;
+    PageControl1: TPageControl;
+    RGPesquisa: TRadioGroup;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    RadioGroup1: TRadioGroup;
+    Label4: TLabel;
+    Label5: TLabel;
     procedure Clientes1Click(Sender: TObject);
     procedure Produtos1Click(Sender: TObject);
     procedure EdPesquisaPedidoChange(Sender: TObject);
@@ -88,50 +95,38 @@ begin
         end
       ELSE  if(RGPesquisa.ItemIndex = 3)  THEN
       begin
-              //total geral
-
-             // sql1:= 'select sum(preco_venda) As total '
-           //   + ' from produtos'
-            //   ;
-            //     DMDados.FDQPedQtd.Close;
-            //    DMDados.FDQPedQtd.SQL.Add(sql1);
-            //     DMDados.FDQPedQtd.Open;
-            //     Total := DMDados.FDQPedQtd.FieldByName('total').AsFloat;
-            //    LBTotalPedidos.Caption :=(FloatToStr(Total));
-            //    DMDados.FDQPedQtd.Close;
-
-
-
-
-         DMDados.FDQPedido.SQL.Clear;
-         DMDados.FDQPedido.Close;
-         DMDados.FDQPedido.SQL.Add('select clientes.codigo_cli, clientes.nome '
-        + ' , itens_pedidos.pedido , itens_pedidos.quantidade , produtos.preco_venda '
-        + ' , sum(itens_pedidos.quantidade) as qtd_itens  ,  '
-
-        + ' (itens_pedidos.quantidade * produtos.preco_venda) AS SUB_TOTAL '
-        + ' sum(SUB_TOTAL) As total  ,'
-        + ' from pedidos , clientes ,itens_pedidos ,produtos '
-        );
-        DMDados.FDQPedido.SQL.Add( 'where clientes.codigo_cli = pedidos.fk_cliente '
-        + '    and pedidos.codigo_ped   = itens_pedidos.pedido '
-        + '    and produtos.codigo_prod =  itens_pedidos.produto '
-        + '   and  clientes.codigo_cli like  ' );
-
-         DMDados.FDQPedido.SQL.Add( ' '+ QuotedStr('%' + EdPesquisaPedido.Text + '%'));
-         DMDados.FDQPedido.SQL.Add( ' group by  '
-         + ' clientes.codigo_cli,   '
-         +' clientes.nome ,     '
-         + ' itens_pedidos.pedido ,   '
-         + ' itens_pedidos.quantidade,  '
-         + ' produtos.preco_venda;    ');
-
-        // DMDados.FDQPedido.SQL.Add('group by clientes.nome'  );
-
-
-
+           DMDados.FDQPedido.SQL.Clear;
+           DMDados.FDQPedido.Close;
+           DMDados.FDQPedido.SQL.Add( 'select clientes.codigo_cli, clientes.nome  '
+            +' , sum(itens_pedidos.quantidade) as qtd_itens  '
+            +' , sum(itens_pedidos.quantidade * produtos.preco_venda) AS TOTAL '
+            +'  from pedidos , clientes ,itens_pedidos ,produtos  '
+            +'  where clientes.codigo_cli = pedidos.fk_cliente '
+                  +'and pedidos.codigo_ped   = itens_pedidos.pedido '
+                  +'and produtos.codigo_prod =  itens_pedidos.produto  '
+                 +'and  clientes.codigo_cli like ' );
+             DMDados.FDQPedido.SQL.Add(  QuotedStr(  EdPesquisaPedido.Text ));
+             DMDados.FDQPedido.SQL.Add( ' group by '
+              +' clientes.codigo_cli  '
+            +' , clientes.nome ');
       end;
-
+       ELSE  if(RGPesquisa.ItemIndex = 4)  THEN
+      begin
+           DMDados.FDQPedido.SQL.Clear;
+           DMDados.FDQPedido.Close;
+           DMDados.FDQPedido.SQL.Add( 'select clientes.codigo_cli, clientes.nome  '
+            +' , sum(itens_pedidos.quantidade) as qtd_itens  '
+            +' , sum(itens_pedidos.quantidade * produtos.preco_venda) AS TOTAL '
+            +'  from pedidos , clientes ,itens_pedidos ,produtos  '
+            +'  where clientes.codigo_cli = pedidos.fk_cliente '
+                  +'and pedidos.codigo_ped   = itens_pedidos.pedido '
+                  +'and produtos.codigo_prod =  itens_pedidos.produto  '
+                 +'and  clientes.codigo_cli like ' );
+             DMDados.FDQPedido.SQL.Add(  QuotedStr(  EdPesquisaPedido.Text ));
+             DMDados.FDQPedido.SQL.Add( ' group by '
+              +' clientes.codigo_cli  '
+            +' , clientes.nome ');
+      end;
        DMDados.FDQPedido.Open();
 
 end;

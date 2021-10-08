@@ -1,0 +1,25 @@
+unit UDMDados;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TDMDados = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DMDados: TDMDados;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

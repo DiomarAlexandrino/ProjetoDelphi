@@ -34,10 +34,10 @@ object FormPrincipal: TFormPrincipal
       Font.Style = []
       ParentFont = False
     end
-    object Label3: TLabel
+    object LbPesquisa: TLabel
       Left = 471
       Top = 21
-      Width = 73
+      Width = 55
       Height = 16
       Caption = 'Pesquisa:'
       Font.Charset = DEFAULT_CHARSET
@@ -53,43 +53,45 @@ object FormPrincipal: TFormPrincipal
       Width = 92
       Height = 21
       TabOrder = 0
+      Text = '3'
       OnChange = EdPesquisaPedidoChange
     end
-    object PageControl1: TPageControl
+    object PageControlPesquisa: TPageControl
       Left = 201
       Top = 1
       Width = 264
       Height = 99
       ActivePage = TabSheet1
       TabOrder = 1
+      OnChange = PageControlPesquisaChange
       object TabSheet1: TTabSheet
-        Caption = 'Pesquisa 1'
-        object RGPesquisa: TRadioGroup
-          Left = 33
-          Top = -14
+        Caption = 'Pesquisa por C'#243'digo'
+        object RGPesquisaCod: TRadioGroup
+          Left = 37
+          Top = -11
           Width = 223
           Height = 85
           Caption = 'Pesquisar'
           Items.Strings = (
-            'Nome do Cliente'
-            'C'#243'digo do CLiente'
-            'Qtd Pedidos por C'#243'digo Cliente'
-            'Soma de Pedidos s/desconto'
-            'Lucro de Pedidos pendentes')
+            'a - Qtd Pedidos por C'#243'digo Cliente '
+            'c - Soma de Pedidos s/desconto '
+            'd - Lucro de Pedidos pendentes')
           TabOrder = 0
-          OnClick = RGPesquisaClick
+          OnClick = RGPesquisaCodClick
         end
       end
       object TabSheet2: TTabSheet
-        Caption = 'Pesquisa 2'
+        Caption = 'Pesquisa por Nome'
         ImageIndex = 1
-        object RadioGroup1: TRadioGroup
-          Left = 16
+        object RGPesquisaNome: TRadioGroup
+          Left = 3
           Top = 8
           Width = 185
-          Height = 60
-          Caption = 'RadioGroup1'
+          Height = 31
+          Items.Strings = (
+            'b - Nome do Cliente')
           TabOrder = 0
+          OnClick = RGPesquisaNomeClick
         end
       end
     end
@@ -125,9 +127,9 @@ object FormPrincipal: TFormPrincipal
       object Label2: TLabel
         Left = 6
         Top = 56
-        Width = 191
+        Width = 214
         Height = 18
-        Caption = 'Cliente que gera maior Lucro:'
+        Caption = 'e - Cliente que gera maior Lucro:'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -138,7 +140,7 @@ object FormPrincipal: TFormPrincipal
       object LBMaiorReceita: TLabel
         Left = 213
         Top = 24
-        Width = 108
+        Width = 3
         Height = 13
       end
       object Label4: TLabel

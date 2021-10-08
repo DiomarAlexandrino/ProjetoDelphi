@@ -109,9 +109,6 @@ object DMDados: TDMDados
   end
   object FDQPedido: TFDQuery
     Connection = FDConexao
-    SQL.Strings = (
-      ''
-      '')
     Left = 152
     Top = 144
   end

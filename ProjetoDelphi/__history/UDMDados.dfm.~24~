@@ -126,25 +126,27 @@ object DMDados: TDMDados
     Active = True
     Connection = FDConexao
     SQL.Strings = (
-      '  SELECT   FIRST 1'
-      '  produtos.codigo_prod , produtos.descricao'
-      '    , produtos.custo_unitario'
-      '   ,sum( produtos.preco_venda ) AS Preco_venda  ,'
-      '      ((( produtos.preco_venda * itens_pedidos.quantidade) -'
-      
-        '      ( produtos.custo_unitario * itens_pedidos.quantidade)- ite' +
-        'ns_pedidos.desconto)) as Lucro'
-      '    FROM produtos'
-      '    INNER JOIN itens_pedidos'
-      '    ON produtos.codigo_prod = itens_pedidos.produto'
       ''
-      '      group by'
+      '  SELECT'
+      '  produtos.codigo_prod   ,'
+      '    sum( itens_pedidos.quantidade ) AS Qtd_Produtos'
+      ''
+      '  ,  produtos.custo_unitario'
+      '  ,  produtos.preco_venda'
+      '  , max(( produtos.preco_venda * itens_pedidos.quantidade) -'
+      
+        '       ( produtos.custo_unitario * itens_pedidos.quantidade)- it' +
+        'ens_pedidos.desconto)  AS Lucro_Produto'
+      '     -- sum( produtos.preco_venda ) AS Preco_venda'
+      '   FROM produtos'
+      '   INNER JOIN itens_pedidos'
+      '   ON produtos.codigo_prod = itens_pedidos.produto'
+      ''
+      ''
+      '  group by'
       '         produtos.codigo_prod'
-      '         ,produtos.descricao'
       '         , produtos.custo_unitario'
-      '          ,Lucro'
-      '       order by'
-      '          5  desc')
+      '          ,  produtos.preco_venda')
     Left = 144
     Top = 200
   end

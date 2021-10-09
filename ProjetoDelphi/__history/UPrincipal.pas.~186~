@@ -96,7 +96,6 @@ end;
 
 procedure TFormPrincipal.FormShow(Sender: TObject);
 begin
-   DMDados.FDQProdutoReceita.Open() ;
    LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
 end;
 

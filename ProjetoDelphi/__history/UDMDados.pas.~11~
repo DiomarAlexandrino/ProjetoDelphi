@@ -33,7 +33,7 @@ type
     FDQPedido: TFDQuery;
     DSPedidos: TDataSource;
     DSPedidoQTD: TDataSource;
-    FDQProdutoReceita: TFDQuery;
+    FDQPedQtd: TFDQuery;
   private
     { Private declarations }
   public

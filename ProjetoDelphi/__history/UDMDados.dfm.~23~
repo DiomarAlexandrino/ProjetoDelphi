@@ -14,7 +14,6 @@ object DMDados: TDMDados
     Top = 32
   end
   object FDQClientes: TFDQuery
-    Active = True
     Connection = FDConexao
     SQL.Strings = (
       'select * from clientes')
@@ -107,5 +106,47 @@ object DMDados: TDMDados
   object DSProdutos: TDataSource
     Left = 232
     Top = 88
+  end
+  object FDQPedido: TFDQuery
+    Connection = FDConexao
+    Left = 152
+    Top = 144
+  end
+  object DSPedidos: TDataSource
+    DataSet = FDQPedido
+    Left = 248
+    Top = 144
+  end
+  object DSPedidoQTD: TDataSource
+    DataSet = FDQPedido
+    Left = 248
+    Top = 200
+  end
+  object FDQProdutoReceita: TFDQuery
+    Connection = FDConexao
+    SQL.Strings = (
+      ''
+      '  SELECT'
+      '  produtos.codigo_prod   ,'
+      '    sum( itens_pedidos.quantidade ) AS Qtd_Produtos'
+      ''
+      '  ,  produtos.custo_unitario'
+      '  ,  produtos.preco_venda'
+      '  , max(( produtos.preco_venda * itens_pedidos.quantidade) -'
+      
+        '       ( produtos.custo_unitario * itens_pedidos.quantidade)- it' +
+        'ens_pedidos.desconto)  AS Lucro_Produto'
+      '     -- sum( produtos.preco_venda ) AS Preco_venda'
+      '   FROM produtos'
+      '   INNER JOIN itens_pedidos'
+      '   ON produtos.codigo_prod = itens_pedidos.produto'
+      ''
+      ''
+      '  group by'
+      '         produtos.codigo_prod'
+      '         , produtos.custo_unitario'
+      '          ,  produtos.preco_venda')
+    Left = 144
+    Top = 200
   end
 end

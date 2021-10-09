@@ -114,37 +114,18 @@ object DMDados: TDMDados
   end
   object DSPedidos: TDataSource
     DataSet = FDQPedido
-    Left = 248
+    Left = 224
     Top = 144
   end
   object DSPedidoQTD: TDataSource
     DataSet = FDQPedido
-    Left = 248
+    Left = 224
     Top = 200
   end
-  object FDQProdutoReceita: TFDQuery
-    Active = True
+  object FDQPedQtd: TFDQuery
     Connection = FDConexao
     SQL.Strings = (
-      '  SELECT   FIRST 1'
-      '  produtos.codigo_prod , produtos.descricao'
-      '    , produtos.custo_unitario'
-      '   ,sum( produtos.preco_venda ) AS Preco_venda  ,'
-      '      ((( produtos.preco_venda * itens_pedidos.quantidade) -'
-      
-        '      ( produtos.custo_unitario * itens_pedidos.quantidade)- ite' +
-        'ns_pedidos.desconto)) as Lucro'
-      '    FROM produtos'
-      '    INNER JOIN itens_pedidos'
-      '    ON produtos.codigo_prod = itens_pedidos.produto'
-      ''
-      '      group by'
-      '         produtos.codigo_prod'
-      '         ,produtos.descricao'
-      '         , produtos.custo_unitario'
-      '          ,Lucro'
-      '       order by'
-      '          5  desc')
+      '')
     Left = 144
     Top = 200
   end

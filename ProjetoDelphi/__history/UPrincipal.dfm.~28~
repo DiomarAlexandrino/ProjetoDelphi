@@ -12,7 +12,6 @@ object FormPrincipal: TFormPrincipal
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -54,6 +53,7 @@ object FormPrincipal: TFormPrincipal
       Width = 92
       Height = 21
       TabOrder = 0
+      Text = '3'
       OnChange = EdPesquisaPedidoChange
     end
     object PageControlPesquisa: TPageControl
@@ -61,7 +61,7 @@ object FormPrincipal: TFormPrincipal
       Top = 1
       Width = 264
       Height = 99
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       TabOrder = 1
       OnChange = PageControlPesquisaChange
       object TabSheet1: TTabSheet
@@ -138,23 +138,17 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object LBMaiorReceita: TLabel
-        Left = 225
+        Left = 213
         Top = 24
-        Width = 56
-        Height = 16
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
+        Width = 100
+        Height = 13
       end
       object Label4: TLabel
         Left = 6
         Top = 24
-        Width = 213
+        Width = 201
         Height = 18
-        Caption = 'f -  Produto Com maior Receita: '
+        Caption = '1 Produto Com maior Receita: '
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15

@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
   FireDAC.Phys.FBDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.Bind.Components,
+  Data.Bind.DBScope;
 
 type
   TDMDados = class(TDataModule)
@@ -27,6 +28,8 @@ type
     DSPedidos: TDataSource;
     DSPedidoQTD: TDataSource;
     FDQProdutoReceita: TFDQuery;
+    FDQItensPed: TFDQuery;
+    DSItensPed: TDataSource;
   private
     { Private declarations }
   public

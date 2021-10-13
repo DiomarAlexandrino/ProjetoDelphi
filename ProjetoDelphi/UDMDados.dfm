@@ -91,4 +91,16 @@ object DMDados: TDMDados
     Left = 144
     Top = 200
   end
+  object FDQItensPed: TFDQuery
+    Connection = FDConexao
+    SQL.Strings = (
+      'select * from itens_pedidos')
+    Left = 152
+    Top = 256
+  end
+  object DSItensPed: TDataSource
+    DataSet = FDQItensPed
+    Left = 240
+    Top = 256
+  end
 end

@@ -10,7 +10,6 @@ uses
   USaidaProdutos in 'USaidaProdutos.pas' {FormSaidaPed};
 
 {$R *.res}
-
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;

@@ -114,7 +114,15 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UPrincipal.pas">
-            <Form>FormPrincipal</Form>
+            <Form>FormControlePedidos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UEntradaProdutos.pas">
+            <Form>FormEntProd</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="USaidaProdutos.pas">
+            <Form>FormSaidaPed</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

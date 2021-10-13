@@ -62,48 +62,12 @@ object DMDados: TDMDados
   end
   object FDQProdutos: TFDQuery
     Connection = FDConexao
-    SQL.Strings = (
-      'select * from produtos')
+    FormatOptions.AssignedValues = [fvMaxStringSize]
     Left = 152
     Top = 88
-    object FDQProdutosCODIGO_PROD: TSmallintField
-      FieldName = 'CODIGO_PROD'
-      Origin = 'CODIGO_PROD'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object FDQProdutosDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Origin = 'DESCRICAO'
-      Required = True
-      Size = 255
-    end
-    object FDQProdutosCODIGO_BARRAS: TStringField
-      FieldName = 'CODIGO_BARRAS'
-      Origin = 'CODIGO_BARRAS'
-      Size = 255
-    end
-    object FDQProdutosQUANTIDADE: TIntegerField
-      FieldName = 'QUANTIDADE'
-      Origin = 'QUANTIDADE'
-    end
-    object FDQProdutosUNIDADE: TStringField
-      FieldName = 'UNIDADE'
-      Origin = 'UNIDADE'
-      Size = 4
-    end
-    object FDQProdutosCUSTO_UNITARIO: TFMTBCDField
-      FieldName = 'CUSTO_UNITARIO'
-      Origin = 'CUSTO_UNITARIO'
-      Precision = 18
-      Size = 2
-    end
-    object FDQProdutosPRECO_VENDA: TIntegerField
-      FieldName = 'PRECO_VENDA'
-      Origin = 'PRECO_VENDA'
-    end
   end
   object DSProdutos: TDataSource
+    DataSet = FDQProdutos
     Left = 232
     Top = 88
   end
@@ -123,28 +87,7 @@ object DMDados: TDMDados
     Top = 200
   end
   object FDQProdutoReceita: TFDQuery
-    Active = True
     Connection = FDConexao
-    SQL.Strings = (
-      '  SELECT   FIRST 1'
-      '  produtos.codigo_prod , produtos.descricao'
-      '    , produtos.custo_unitario'
-      '   ,sum( produtos.preco_venda ) AS Preco_venda  ,'
-      '      ((( produtos.preco_venda * itens_pedidos.quantidade) -'
-      
-        '      ( produtos.custo_unitario * itens_pedidos.quantidade)- ite' +
-        'ns_pedidos.desconto)) as Lucro'
-      '    FROM produtos'
-      '    INNER JOIN itens_pedidos'
-      '    ON produtos.codigo_prod = itens_pedidos.produto'
-      ''
-      '      group by'
-      '         produtos.codigo_prod'
-      '         ,produtos.descricao'
-      '         , produtos.custo_unitario'
-      '          ,Lucro'
-      '       order by'
-      '          5  desc')
     Left = 144
     Top = 200
   end

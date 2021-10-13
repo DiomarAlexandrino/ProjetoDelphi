@@ -23,13 +23,6 @@ type
     FDQClientesCODIGO_CLI: TSmallintField;
     FDQProdutos: TFDQuery;
     DSProdutos: TDataSource;
-    FDQProdutosDESCRICAO: TStringField;
-    FDQProdutosCODIGO_BARRAS: TStringField;
-    FDQProdutosQUANTIDADE: TIntegerField;
-    FDQProdutosUNIDADE: TStringField;
-    FDQProdutosCUSTO_UNITARIO: TFMTBCDField;
-    FDQProdutosPRECO_VENDA: TIntegerField;
-    FDQProdutosCODIGO_PROD: TSmallintField;
     FDQPedido: TFDQuery;
     DSPedidos: TDataSource;
     DSPedidoQTD: TDataSource;

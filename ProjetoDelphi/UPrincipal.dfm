@@ -1,20 +1,20 @@
-object FormPrincipal: TFormPrincipal
+object FormControlePedidos: TFormControlePedidos
   Left = 0
   Top = 0
-  Caption = 'FormPrincipal'
+  Caption = 'Controle de Pedidos'
   ClientHeight = 340
   ClientWidth = 878
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
-  Font.Style = []
+  Font.Height = -19
+  Font.Name = 'Times New Roman'
+  Font.Style = [fsBold]
   Menu = MainMenu1
   OldCreateOrder = False
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 22
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -23,21 +23,21 @@ object FormPrincipal: TFormPrincipal
     Align = alTop
     TabOrder = 0
     object Label1: TLabel
-      Left = 56
-      Top = 9
-      Width = 139
-      Height = 16
+      Left = 2
+      Top = 18
+      Width = 197
+      Height = 19
       Caption = 'Rela'#231#227'o de Pedidos por:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -13
+      Font.Height = -16
       Font.Name = 'Tahoma'
-      Font.Style = []
+      Font.Style = [fsBold]
       ParentFont = False
     end
     object LbPesquisa: TLabel
-      Left = 471
-      Top = 21
+      Left = 551
+      Top = 16
       Width = 55
       Height = 16
       Caption = 'Pesquisa:'
@@ -49,27 +49,33 @@ object FormPrincipal: TFormPrincipal
       ParentFont = False
     end
     object EdPesquisaPedido: TEdit
-      Left = 471
-      Top = 43
+      Left = 551
+      Top = 38
       Width = 92
-      Height = 21
+      Height = 30
       TabOrder = 0
       OnChange = EdPesquisaPedidoChange
     end
     object PageControlPesquisa: TPageControl
       Left = 201
       Top = 1
-      Width = 264
+      Width = 296
       Height = 99
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Times New Roman'
+      Font.Style = [fsBold]
+      ParentFont = False
       TabOrder = 1
       OnChange = PageControlPesquisaChange
       object TabSheet1: TTabSheet
         Caption = 'Pesquisa por C'#243'digo'
         object RGPesquisaCod: TRadioGroup
-          Left = 37
-          Top = -11
-          Width = 223
+          Left = -4
+          Top = -17
+          Width = 264
           Height = 85
           Caption = 'Pesquisar'
           Items.Strings = (
@@ -84,10 +90,10 @@ object FormPrincipal: TFormPrincipal
         Caption = 'Pesquisa por Nome'
         ImageIndex = 1
         object RGPesquisaNome: TRadioGroup
-          Left = 3
-          Top = 8
-          Width = 185
-          Height = 31
+          Left = -4
+          Top = -21
+          Width = 264
+          Height = 95
           Items.Strings = (
             'b - Nome do Cliente')
           TabOrder = 0
@@ -110,12 +116,18 @@ object FormPrincipal: TFormPrincipal
       Height = 111
       Align = alClient
       DataSource = DMDados.DSPedidos
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Charset = ANSI_CHARSET
       TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Tahoma'
-      TitleFont.Style = []
+      TitleFont.Height = -13
+      TitleFont.Name = 'Times New Roman'
+      TitleFont.Style = [fsBold]
     end
     object Panel3: TPanel
       Left = 1
@@ -125,61 +137,108 @@ object FormPrincipal: TFormPrincipal
       Align = alBottom
       TabOrder = 1
       object Label2: TLabel
-        Left = 6
-        Top = 56
-        Width = 214
-        Height = 18
-        Caption = 'e - Cliente que gera maior Lucro:'
+        Left = 550
+        Top = 6
+        Width = 307
+        Height = 23
+        Caption = 'e - Cliente que gera maior Lucro'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-      end
-      object LBMaiorReceita: TLabel
-        Left = 225
-        Top = 24
-        Width = 56
-        Height = 16
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
-        Font.Height = -13
+        Font.Height = -19
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object Label4: TLabel
-        Left = 6
-        Top = 24
-        Width = 213
-        Height = 18
-        Caption = 'f -  Produto Com maior Receita: '
+      object LBClienteLucro: TLabel
+        Left = 624
+        Top = 42
+        Width = 6
+        Height = 23
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
+        Font.Color = clBlue
+        Font.Height = -19
         Font.Name = 'Tahoma'
-        Font.Style = []
+        Font.Style = [fsBold]
         ParentFont = False
       end
-      object Label5: TLabel
-        Left = 361
-        Top = 24
-        Width = 201
-        Height = 18
-        Caption = '2 Produto Com maior Receita: '
-        Font.Charset = DEFAULT_CHARSET
+      object PageControl1: TPageControl
+        Left = 31
+        Top = 6
+        Width = 506
+        Height = 76
+        ActivePage = TabSheet3
+        Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Tahoma'
-        Font.Style = []
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
         ParentFont = False
+        TabOrder = 0
+        object TabSheet3: TTabSheet
+          Caption = '       ***    Ranking dos produtos com maiores receitas ***     '
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Times New Roman'
+          Font.Style = [fsBold]
+          ParentFont = False
+          object Label4: TLabel
+            Left = 3
+            Top = 3
+            Width = 112
+            Height = 23
+            Caption = 'f -  Primeiro: '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object LBMaiorReceita: TLabel
+            Left = 121
+            Top = 3
+            Width = 6
+            Height = 23
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label5: TLabel
+            Left = 248
+            Top = 3
+            Width = 112
+            Height = 23
+            Caption = 'g - Segundo:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object LBReceitaProd2: TLabel
+            Left = 376
+            Top = 3
+            Width = 6
+            Height = 23
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+        end
       end
     end
   end
   object MainMenu1: TMainMenu
-    Left = 16
-    Top = 16
+    Left = 24
+    Top = 56
     object formPrincipal: TMenuItem
       Caption = 'Cadastros'
       object Clientes1: TMenuItem
@@ -189,6 +248,17 @@ object FormPrincipal: TFormPrincipal
       object Produtos1: TMenuItem
         Caption = 'Produtos'
         OnClick = Produtos1Click
+      end
+    end
+    object Pedidos1: TMenuItem
+      Caption = 'Pedidos'
+      object Entradas1: TMenuItem
+        Caption = 'Entradas'
+        OnClick = Entradas1Click
+      end
+      object Sadas1: TMenuItem
+        Caption = 'Sa'#237'das'
+        OnClick = Sadas1Click
       end
     end
   end

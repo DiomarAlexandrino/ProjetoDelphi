@@ -20,19 +20,15 @@ object FormCadProduto: TFormCadProduto
     Height = 97
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 621
     object DBNavigator1: TDBNavigator
       Left = 1
       Top = 1
       Width = 753
       Height = 95
+      DataSource = DMDados.DSProdutos
       VisibleButtons = [nbInsert, nbDelete, nbEdit, nbPost, nbCancel, nbRefresh]
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 136
-      ExplicitTop = 32
-      ExplicitWidth = 240
-      ExplicitHeight = 25
     end
   end
   object Panel2: TPanel
@@ -43,8 +39,6 @@ object FormCadProduto: TFormCadProduto
     Align = alClient
     Caption = 'db'
     TabOrder = 1
-    ExplicitWidth = 621
-    ExplicitHeight = 192
     object DBGridProd: TDBGrid
       Left = 1
       Top = 1
@@ -67,7 +61,6 @@ object FormCadProduto: TFormCadProduto
     Height = 255
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 287
     object Label1: TLabel
       Left = 18
       Top = 24

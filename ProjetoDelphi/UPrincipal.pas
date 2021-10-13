@@ -8,7 +8,7 @@ uses
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.ComCtrls;
 
 type
-  TFormPrincipal = class(TForm)
+  TFormControlePedidos = class(TForm)
     MainMenu1: TMainMenu;
     formPrincipal: TMenuItem;
     Produtos1: TMenuItem;
@@ -29,6 +29,13 @@ type
     RGPesquisaNome: TRadioGroup;
     Label4: TLabel;
     Label5: TLabel;
+    PageControl1: TPageControl;
+    TabSheet3: TTabSheet;
+    LBClienteLucro: TLabel;
+    LBReceitaProd2: TLabel;
+    Pedidos1: TMenuItem;
+    Entradas1: TMenuItem;
+    Sadas1: TMenuItem;
     procedure Clientes1Click(Sender: TObject);
     procedure Produtos1Click(Sender: TObject);
     procedure EdPesquisaPedidoChange(Sender: TObject);
@@ -36,6 +43,8 @@ type
     procedure PageControlPesquisaChange(Sender: TObject);
     procedure RGPesquisaNomeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Entradas1Click(Sender: TObject);
+    procedure Sadas1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,21 +52,23 @@ type
   end;
 
 var
-  FormPrincipal: TFormPrincipal;
+  FormControlePedidos: TFormControlePedidos;
 
 implementation
 
 {$R *.dfm}
 
-uses UCadastroClientes, UCadastroProdutos, UDMDados;
+uses UCadastroClientes, UCadastroProdutos, UDMDados, UEntradaProdutos,
+  USaidaProdutos;
 
 
-procedure TFormPrincipal.Clientes1Click(Sender: TObject);
+procedure TFormControlePedidos.Clientes1Click(Sender: TObject);
 begin
+    DMDados.FDQClientes.open;
     FormCadCliente.ShowModal;
 end;
 
-procedure TFormPrincipal.EdPesquisaPedidoChange(Sender: TObject);
+procedure TFormControlePedidos.EdPesquisaPedidoChange(Sender: TObject);
 var
 subTotal : double;
  Total: Double;
@@ -94,24 +105,117 @@ end;
 
 
 
-procedure TFormPrincipal.FormShow(Sender: TObject);
+procedure TFormControlePedidos.Entradas1Click(Sender: TObject);
 begin
-   DMDados.FDQProdutoReceita.Open() ;
-   LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
+   FormEntProd.Show;
+   DMDados.FDQProdutos.Close() ;
 end;
 
-procedure TFormPrincipal.PageControlPesquisaChange(Sender: TObject);
+procedure TFormControlePedidos.FormShow(Sender: TObject);
+begin
+
+   DMDados.FDQProdutoReceita.close() ;
+   DMDados.FDQProdutoReceita.SQL.Add( ''
+   +' SELECT   FIRST 1                                         '
+   +'   produtos.codigo_prod , produtos.descricao              '
+   +'   , produtos.custo_unitario                              '
+   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,         '
+   +'   sum((( produtos.preco_venda * itens_pedidos.quantidade) - '
+   +'   ( produtos.custo_unitario * itens_pedidos.quantidade)  '
+   +'     - itens_pedidos.desconto)) as Lucro                  '
+   +'   FROM produtos                                          '
+   +'   INNER JOIN itens_pedidos                               '
+   +'   ON produtos.codigo_prod = itens_pedidos.produto        '
+   +'   INNER JOIN pedidos                                     '
+   +'   ON pedidos.codigo_ped= itens_pedidos.pedido            '
+   +'   where pedidos.situacao like                            '
+        + QuotedStr('Faturado')
+   +'   group by                                               '
+   +'      produtos.codigo_prod                                '
+   +'      ,produtos.descricao                                 '
+   +'      , produtos.custo_unitario                           '
+   +'    --  ,Lucro                                             '
+   +'       order by                                           '
+   +'       5  desc  ' );
+   DMDados.FDQProdutoReceita.Open() ;
+   LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
+   DMDados.FDQProdutoReceita.close() ;
+
+   DMDados.FDQProdutoReceita.SQL.Clear();
+   DMDados.FDQProdutoReceita.SQL.Add( ''
+   +' SELECT   FIRST 1                                          '
+   +' SKIP 1                                                    '
+   +'   produtos.codigo_prod , produtos.descricao               '
+   +'   , produtos.custo_unitario                               '
+   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,          '
+   +'   ((( produtos.preco_venda * itens_pedidos.quantidade) -  '
+   +'   ( produtos.custo_unitario * itens_pedidos.quantidade)   '
+   +'   - itens_pedidos.desconto)) as Lucro                     '
+   +'   FROM produtos                                           '
+   +'   INNER JOIN itens_pedidos                                '
+   +'   ON produtos.codigo_prod = itens_pedidos.produto         '
+   +'   INNER JOIN pedidos                                      '
+   +'   ON pedidos.codigo_ped= itens_pedidos.pedido             '
+   +'   where pedidos.situacao like                             '
+        + QuotedStr('Faturado')
+   +'   group by                                                '
+   +'       produtos.codigo_prod                                '
+   +'      ,produtos.descricao                                  '
+   +'      , produtos.custo_unitario                            '
+   +'       ,Lucro                                              '
+   +'       order by                                            '
+   +'       5  desc  ' );
+   DMDados.FDQProdutoReceita.Open() ;
+   LBReceitaProd2.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
+
+
+   DMDados.FDQProdutoReceita.close() ;
+   DMDados.FDQProdutoReceita.SQL.Clear();
+   DMDados.FDQProdutoReceita.SQL.Add( ''
+   +'   SELECT FIRST 1                                                  '
+   +'     clientes.codigo_cli , clientes.nome                           '
+   +'   , produtos.custo_unitario ,pedidos.situacao                     '
+   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,                  '
+   +'     ((( produtos.preco_venda * itens_pedidos.quantidade) -        '
+   +'     ( produtos.custo_unitario * itens_pedidos.quantidade)-        '
+   +'   itens_pedidos.desconto)) as Lucro                               '
+   +'   FROM produtos                                                   '
+   +'   INNER JOIN itens_pedidos                                        '
+   +'   ON produtos.codigo_prod = itens_pedidos.produto                 '
+   +'   INNER JOIN pedidos                                              '
+   +'   ON pedidos.codigo_ped= itens_pedidos.pedido                     '
+   +'   INNER JOIN clientes                                             '
+   +'   ON pedidos.fk_cliente = clientes.codigo_cli                     '
+   +'   where pedidos.situacao like                                     '
+        + QuotedStr('Faturado')
+   +'     group by                                                      '
+   +'       clientes.codigo_cli                                         '
+   +'        ,clientes.nome                                             '
+   +'        , produtos.custo_unitario                                  '
+   +'        , pedidos.situacao                                         '
+   +'         ,Lucro                                                    '
+   +'      order by                                                     '
+   +'         5  desc                                                   ' );
+   DMDados.FDQProdutoReceita.Open() ;
+   LBClienteLucro.Caption := DMDados.FDQProdutoReceita.FieldByName('NOME').AsString;
+   DMDados.FDQProdutoReceita.close() ;
+end;
+
+procedure TFormControlePedidos.PageControlPesquisaChange(Sender: TObject);
 begin
     RGPesquisaCod.ItemIndex  := -1;
     RGPesquisaNome.ItemIndex := -1;
 end;
 
-procedure TFormPrincipal.Produtos1Click(Sender: TObject);
+procedure TFormControlePedidos.Produtos1Click(Sender: TObject);
 begin
+    DMDados.FDQProdutos.Close();
+    DMDados.FDQProdutos.SQL.Add('select * from produtos') ;
+    DMDados.FDQProdutos.Open();
     FormCadProduto.ShowModal;
 end;
 
-procedure TFormPrincipal.RGPesquisaCodClick(Sender: TObject);
+procedure TFormControlePedidos.RGPesquisaCodClick(Sender: TObject);
 var
   psql : string;
 begin
@@ -151,22 +255,26 @@ begin
       begin
            DMDados.FDQPedido.SQL.Clear;
            DMDados.FDQPedido.Close;
-           psql := ' select  pedidos.codigo_ped, pedidos.situacao, '
-           + ' clientes.codigo_cli , produtos.preco_venda  , itens_pedidos.quantidade'
-
-           + ' , (itens_pedidos.quantidade * produtos.preco_venda - '
-           + ' (( itens_pedidos.quantidade * produtos.custo_unitario )+itens_pedidos.desconto ))  AS LUCRO_PEDIDO   '
-           +' from   '
-           +' pedidos , clientes ,itens_pedidos ,produtos '
-           +' where     pedidos.fk_cliente = clientes.codigo_cli'
-           +'           and produtos.codigo_prod =  itens_pedidos.produto     '
-           +'           and pedidos.codigo_ped   = itens_pedidos.pedido     '
-           +'                and pedidos.situacao like '
-           +                QuotedStr( 'Pendente' )
-           +'              group by  '
-           +'                 clientes.codigo_cli, pedidos.codigo_ped    '
-           +'                ,pedidos.situacao , itens_pedidos.quantidade '
-           +'                , produtos.preco_venda  ,  produtos.custo_unitario, itens_pedidos.desconto';
+           psql := ' select  pedidos.codigo_ped, pedidos.situacao,   '
+           + ' clientes.codigo_cli , produtos.preco_venda            '
+           + ' , itens_pedidos.quantidade                            '
+           + ' , (itens_pedidos.quantidade * produtos.preco_venda -  '
+           + ' ((itens_pedidos.quantidade * produtos.custo_unitario )'
+           + ' +itens_pedidos.desconto ))  AS LUCRO_PEDIDO           '
+           +'  from                                                  '
+           +'      pedidos , clientes ,itens_pedidos ,produtos       '
+           +'  where                                                 '
+           +'      pedidos.fk_cliente = clientes.codigo_cli          '
+           +'      and produtos.codigo_prod =  itens_pedidos.produto '
+           +'      and pedidos.codigo_ped   = itens_pedidos.pedido   '
+           +'      and pedidos.situacao like                         '
+           +       QuotedStr( 'Pendente' )
+           +'      group by                                          '
+           +'      clientes.codigo_cli, pedidos.codigo_ped           '
+           +'      ,pedidos.situacao , itens_pedidos.quantidade      '
+           +'      , produtos.preco_venda                            '
+           +'      , produtos.custo_unitario                         '
+           +'      , itens_pedidos.desconto                          '  ;
            DMDados.FDQPedido.SQL.Add( psql);
            DMDados.FDQPedido.Open();
            EdPesquisaPedido.Enabled := false;
@@ -176,10 +284,16 @@ begin
 
 end;
 
-procedure TFormPrincipal.RGPesquisaNomeClick(Sender: TObject);
+procedure TFormControlePedidos.RGPesquisaNomeClick(Sender: TObject);
 begin
       EdPesquisaPedido.Visible := true;
       lbpesquisa.Visible := true;
+end;
+
+procedure TFormControlePedidos.Sadas1Click(Sender: TObject);
+begin
+   FormSaidaPed.Show;
+   DMDados.FDQProdutos.Close() ;
 end;
 
 end.

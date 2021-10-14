@@ -3,7 +3,7 @@ object FormSaidaPed: TFormSaidaPed
   Top = 0
   Caption = 'Sa'#237'da de Pedidos'
   ClientHeight = 326
-  ClientWidth = 681
+  ClientWidth = 845
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,19 +11,18 @@ object FormSaidaPed: TFormSaidaPed
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 681
-    Height = 131
+    Width = 845
+    Height = 97
     Align = alTop
     TabOrder = 0
     object Label3: TLabel
       Left = 276
-      Top = 87
+      Top = 73
       Width = 87
       Height = 19
       Caption = 'Quantidade:'
@@ -74,7 +73,7 @@ object FormSaidaPed: TFormSaidaPed
     end
     object LBQtd: TLabel
       Left = 369
-      Top = 87
+      Top = 73
       Width = 5
       Height = 19
       Font.Charset = DEFAULT_CHARSET
@@ -88,7 +87,7 @@ object FormSaidaPed: TFormSaidaPed
       Left = 1
       Top = 1
       Width = 264
-      Height = 129
+      Height = 95
       ActivePage = TabSheet2
       Align = alLeft
       Font.Charset = ANSI_CHARSET
@@ -98,6 +97,7 @@ object FormSaidaPed: TFormSaidaPed
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
+      ExplicitHeight = 129
       object TabSheet2: TTabSheet
         Caption = 'Pesquisa:'
         ImageIndex = 1
@@ -130,27 +130,64 @@ object FormSaidaPed: TFormSaidaPed
         end
       end
     end
-    object PageControl1: TPageControl
-      Left = 432
+    object Panel5: TPanel
+      Left = 480
       Top = 1
-      Width = 248
-      Height = 129
-      ActivePage = Compra
+      Width = 364
+      Height = 95
       Align = alRight
+      Caption = 'Panel5'
+      TabOrder = 1
+      ExplicitHeight = 129
+      object DBGridSaidaProd: TDBGrid
+        Left = 1
+        Top = 1
+        Width = 362
+        Height = 93
+        Align = alClient
+        DataSource = DMDados.DSProdutos
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        OnCellClick = DBGridSaidaProdCellClick
+      end
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 97
+    Width = 845
+    Height = 87
+    Align = alClient
+    TabOrder = 1
+    ExplicitLeft = 307
+    ExplicitTop = 53
+    ExplicitHeight = 101
+    object PageControl1: TPageControl
+      Left = 1
+      Top = 1
+      Width = 843
+      Height = 85
+      ActivePage = Compra
+      Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
+      ExplicitHeight = 133
       object Compra: TTabSheet
         Caption = 'Pedido '
         object Label2: TLabel
           Left = 19
-          Top = 3
+          Top = 10
           Width = 87
-          Height = 19
+          Height = 21
           Caption = 'Quantidade:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -160,10 +197,10 @@ object FormSaidaPed: TFormSaidaPed
           ParentFont = False
         end
         object Label4: TLabel
-          Left = 61
-          Top = 34
+          Left = 237
+          Top = 10
           Width = 46
-          Height = 19
+          Height = 21
           Caption = 'Custo:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -180,11 +217,11 @@ object FormSaidaPed: TFormSaidaPed
           TabOrder = 0
         end
         object BtnAdd: TButton
-          Left = 11
-          Top = 59
-          Width = 206
+          Left = 423
+          Top = 3
+          Width = 98
           Height = 28
-          Caption = 'Confirmar Venda'
+          Caption = 'Adicionar'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -195,8 +232,8 @@ object FormSaidaPed: TFormSaidaPed
           OnClick = BtnAddClick
         end
         object EdCusto: TEdit
-          Left = 126
-          Top = 28
+          Left = 302
+          Top = 3
           Width = 88
           Height = 26
           Font.Charset = DEFAULT_CHARSET
@@ -210,42 +247,20 @@ object FormSaidaPed: TFormSaidaPed
       end
     end
   end
-  object Panel2: TPanel
-    Left = 0
-    Top = 131
-    Width = 681
-    Height = 101
-    Align = alClient
-    TabOrder = 1
-    object DBGridSaidaProd: TDBGrid
-      Left = 1
-      Top = 1
-      Width = 679
-      Height = 99
-      Align = alClient
-      DataSource = DMDados.DSProdutos
-      TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Tahoma'
-      TitleFont.Style = []
-      OnCellClick = DBGridSaidaProdCellClick
-    end
-  end
   object Panel3: TPanel
     Left = 0
-    Top = 232
-    Width = 681
-    Height = 94
+    Top = 184
+    Width = 845
+    Height = 142
     Align = alBottom
     TabOrder = 2
     object DBGridItens: TDBGrid
       Left = 1
       Top = 1
-      Width = 679
-      Height = 92
+      Width = 633
+      Height = 140
       Align = alClient
+      DataSource = DSItens
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -253,12 +268,52 @@ object FormSaidaPed: TFormSaidaPed
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
     end
-  end
-  object FDQItens: TFDQuery
-    Left = 464
-    Top = 272
-    object FDQItensCodigo: TIntegerField
-      FieldName = 'Codigo'
+    object Panel4: TPanel
+      Left = 634
+      Top = 1
+      Width = 210
+      Height = 140
+      Align = alRight
+      TabOrder = 1
+      ExplicitLeft = 488
+      ExplicitHeight = 92
+      object Button1: TButton
+        Left = 24
+        Top = 5
+        Width = 121
+        Height = 36
+        Caption = 'Finalizar Venda'
+        TabOrder = 0
+        OnClick = Button1Click
+      end
     end
+  end
+  object CDSTemporario: TClientDataSet
+    PersistDataPacket.Data = {
+      570000009619E0BD01000000180000000400000000000300000057000B434F44
+      5F50524F4455544F040001000000000004515444450400010000000000055641
+      4C4F52080004000000000005544F54414C08000400000000000000}
+    Active = True
+    Aggregates = <>
+    Params = <>
+    Left = 360
+    Top = 208
+    object CDSTemporarioCOD_PRODUTO: TIntegerField
+      FieldName = 'COD_PRODUTO'
+    end
+    object CDSTemporarioQTDE: TIntegerField
+      FieldName = 'QTDE'
+    end
+    object CDSTemporarioVALOR: TFloatField
+      FieldName = 'VALOR'
+    end
+    object CDSTemporarioTOTAL: TFloatField
+      FieldName = 'TOTAL'
+    end
+  end
+  object DSItens: TDataSource
+    DataSet = CDSTemporario
+    Left = 440
+    Top = 208
   end
 end

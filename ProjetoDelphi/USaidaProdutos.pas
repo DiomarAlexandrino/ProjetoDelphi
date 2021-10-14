@@ -21,16 +21,7 @@ type
     RGPesquisa: TRadioGroup;
     EdPesquisa: TEdit;
     Label3: TLabel;
-    LBCod: TLabel;
     Label5: TLabel;
-    PageControl1: TPageControl;
-    Compra: TTabSheet;
-    Label2: TLabel;
-    Label4: TLabel;
-    EdQtd: TEdit;
-    BtnAdd: TButton;
-    EdCusto: TEdit;
-    LBCodProd: TLabel;
     LBQtd: TLabel;
     DBGridSaidaProd: TDBGrid;
     DBGridItens: TDBGrid;
@@ -42,10 +33,21 @@ type
     DSItens: TDataSource;
     Panel4: TPanel;
     Button1: TButton;
+    Panel5: TPanel;
+    PageControl1: TPageControl;
+    Compra: TTabSheet;
+    Label2: TLabel;
+    Label4: TLabel;
+    EdQtd: TEdit;
+    BtnAdd: TButton;
+    EdVenda: TEdit;
+    LBCod: TLabel;
+    LBCodProd: TLabel;
     procedure BtnAddClick(Sender: TObject);
     procedure EdPesquisaChange(Sender: TObject);
     procedure DBGridSaidaProdCellClick(Column: TColumn);
     procedure Button1Click(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -61,36 +63,35 @@ implementation
 
 uses UDMDados;
 
+
+
 procedure TFormSaidaPed.BtnAddClick(Sender: TObject);
-
-   var
-
-    sql1 : string ;
+var
+   sql1 : string ;
    Total : real;
-
 begin
     DMDados.FDQProdutos.Close();
     DMDados.FDQProdutos.SQL.Clear;
 
-   // sql1 :='update produtos set quantidade = '  +QuotedStr( EdQtd.Text)
-  //  + ', custo_unitario = '  +QuotedStr( EdCusto.Text)
-   // +' where codigo_prod = ' +QuotedStr( LBCodProd.Caption);
+     // sql1 :='update produtos set quantidade = '  +QuotedStr( EdQtd.Text)
+     //  + ', custo_unitario = '  +QuotedStr( EdCusto.Text)
+     // +' where codigo_prod = ' +QuotedStr( LBCodProd.Caption);
 
-   // DMDados.FDQProdutos.ExecSQL(sql1);
+     // DMDados.FDQProdutos.ExecSQL(sql1);
      ShowMessage('Pedido realizado com Sucesso') ;
-// temporaria
-  cdsTemporario.Append;
-  cdsTemporario.FieldByName('COD_PRODUTO').AsInteger :=
-  StrToInt(LBCodProd.Caption);
-  cdsTemporario.FieldByName('QTDE').AsInteger :=
-   StrToInt(edQtd.Text);
-  cdsTemporario.FieldByName('VALOR').AsFloat :=
-   StrToFloat(EdCusto.Text);
-  Total := StrToInt(edQtd.Text) * StrToFloat(edCusto.Text);
-  cdsTemporario.FieldByName('TOTAL').AsFloat :=
-  Total;
-  cdsTemporario.Post;
-  CDSTemporario.Open;
+     // temporaria
+    cdsTemporario.Append;
+    cdsTemporario.FieldByName('COD_PRODUTO').AsInteger :=
+    StrToInt(LBCodProd.Caption);
+    cdsTemporario.FieldByName('QTDE').AsInteger :=
+    StrToInt(edQtd.Text);
+    cdsTemporario.FieldByName('VALOR').AsFloat :=
+    StrToFloat(EdVenda.Text);
+    Total := StrToInt(edQtd.Text) * StrToFloat(edVenda.Text);
+    cdsTemporario.FieldByName('TOTAL').AsFloat :=
+    Total;
+    cdsTemporario.Post;
+    CDSTemporario.Open;
 
 
 end;
@@ -102,43 +103,49 @@ procedure TFormSaidaPed.Button1Click(Sender: TObject);
 var
 CodigoPedido, codigoItem : integer;
 begin
-  DMDados.FDQPedido.SQL.Clear;
-  DMDados.FDQPedido.SQL.Add('Select MAX(CODigo_ped) as CodigoPedido from Pedidos');
-  DMDados.FDQPedido.Open;
-  CodigoPedido := DMDados.FDQPedido.FieldByName('CodigoPedido').AsInteger;
-  DMDados.FDQPedido.Close;
 
 
+     //pega utimo cod pedido
 
+     DMDados.FDQPedido.SQL.Clear;
+     DMDados.FDQPedido.SQL.Add('Select MAX(codigo_ped) as CODIGOPED from Pedidos');
+      DMDados.FDQPedido.Open() ;
+     CodigoPedido := DMDados.FDQPedido.FieldByName('CODIGOPED').AsInteger;
+     DMDados.FDQPedido.Close;
+     //limpa sql
+     DMDados.FDQPedido.SQL.Clear;
+     DMDados.FDQPedido.SQL.Add('Select * from pedidos');
+    //  salvando pedido
+     DMDados.FDQPedido.Open();
+     DMDados.FDQPedido.Append;
+     DMDados.FDQPedido.FieldByName('codigo_ped').AsInteger :=
+     CodigoPedido + 1;
+     DMDados.FDQPedido.Post;
 
- cdsTemporario.First; // move para o primeiro registro da tabela temporária
+  cdsTemporario.First; // move para o primeiro registro da tabela temporária
   while not (cdsTemporario.EOF) do // laço de repetição
   begin
   /// copia o ultimo codigo do item
      DMDados.FDQItensPed.SQL.Clear;
      DMDados.FDQItensPed.SQL.Add('Select MAX(codigo_item) as CodigoItem from Itens_Pedidos');
-    DMDados.FDQItensPed.Open;
-    codigoItem := DMDados.FDQItensPed.FieldByName('CodigoItem').AsInteger;
-    DMDados.FDQItensPed.Close;
-    //limpa sql
-    DMDados.FDQItensPed.SQL.Clear;
-    DMDados.FDQItensPed.SQL.Add('Select * from itens_pedidos');
+     DMDados.FDQItensPed.Open;
+     codigoItem := DMDados.FDQItensPed.FieldByName('CodigoItem').AsInteger;
+     DMDados.FDQItensPed.Close;
+     //limpa sql
+     DMDados.FDQItensPed.SQL.Clear;
+     DMDados.FDQItensPed.SQL.Add('Select * from itens_pedidos');
 
      DMDados.FDQItensPed.Open();
      DMDados.FDQItensPed.Append; // coloca a tabela física em modo de inserção
-
     // copia os valores da tabela temporária para a tabela física
-   // DMDados.FDQItensPed.FieldByName('COD_VENDA').AsInteger :=
-    //  CodigoVenda;
 
-      DMDados.FDQItensPed.Append;
       DMDados.FDQItensPed.FieldByName('codigo_item').AsInteger :=
       codigoItem + 1;
-
-     DMDados.FDQItensPed.FieldByName('PRODUTO').AsInteger :=
+      DMDados.FDQItensPed.FieldByName('Pedido').AsInteger :=
+      CodigoPedido;
+      DMDados.FDQItensPed.FieldByName('PRODUTO').AsInteger :=
       cdsTemporario.FieldByName('COD_PRODUTO').AsInteger;
-
-     DMDados.FDQItensPed.FieldByName('Quantidade').AsInteger :=
+      DMDados.FDQItensPed.FieldByName('Quantidade').AsInteger :=
       cdsTemporario.FieldByName('QTDE').AsInteger;
 
     //DMDados.FDQItensPed.FieldByName('VALOR').AsFloat :=
@@ -147,10 +154,8 @@ begin
      //DMDados.FDQItensPed.FieldByName('TOTAL').AsFloat :=
      // cdsTemporario.FieldByName('TOTAL').AsFloat;
 
-       DMDados.FDQItensPed.Post; // grava o item da venda
-        DMDados.FDQItensPed.close;
-        dmdados.FDQItensPed.open;
-
+        DMDados.FDQItensPed.Post; // grava o item da venda
+        
      // deleta o registro da tabela temporária
      // isso fará com que o próximo registro seja lido
       cdsTemporario.Delete;
@@ -165,6 +170,8 @@ begin
   DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
   LBQtd.Caption:=
   DBGridSaidaProd.SelectedField.DataSet.FieldByName('quantidade').AsString;
+   EdVenda.text :=(
+  DBGridSaidaProd.SelectedField.DataSet.FieldByName('preco_venda').AsString);
 end;
 
 procedure TFormSaidaPed.EdPesquisaChange(Sender: TObject);
@@ -175,18 +182,18 @@ begin
       DMDados.FDQProdutos.close() ;
       DMDados.FDQProdutos.SQL.Clear;
       DMDados.FDQProdutos.SQL.Add( ''
-      +' SELECT                                         '
+      +' SELECT  FIRST 10                                         '
       +'   produtos.codigo_prod , produtos.descricao              '
       +'   , produtos.custo_unitario                              '
-      +'   , produtos.quantidade                             '
-      +'   ,sum( produtos.preco_venda ) AS Preco_venda          '
+      +'   , produtos.quantidade                                  '
+      +'   ,sum( produtos.preco_venda ) AS Preco_venda            '
       +'                '
       +'   FROM produtos                                          '
-      +'   left JOIN itens_pedidos                               '
+      +'   left JOIN itens_pedidos                                '
       +'   ON produtos.codigo_prod = itens_pedidos.produto        '
-      +'   left JOIN pedidos                                     '
+      +'   left JOIN pedidos                                      '
       +'   ON pedidos.codigo_ped= itens_pedidos.pedido            '
-      +'   where produtos.descricao like                            '
+      +'   where produtos.descricao like                          '
            + QuotedStr('%'+EdPesquisa.Text+'%')
       +'   group by                                               '
       +'      produtos.codigo_prod                                '
@@ -204,7 +211,7 @@ begin
       DMDados.FDQProdutos.close() ;
       DMDados.FDQProdutos.SQL.Clear;
       DMDados.FDQProdutos.SQL.Add( ''
-      +' SELECT                                         '
+      +' SELECT   FIRST 10                                      '
       +'   produtos.codigo_prod , produtos.descricao              '
       +'   , produtos.custo_unitario                              '
       +'   , produtos.quantidade                             '
@@ -228,5 +235,6 @@ begin
        //DMDados.FDQProdutoReceita.close() ;
     end;
 end;
+
 
 end.

@@ -3,7 +3,7 @@ object FormSaidaPed: TFormSaidaPed
   Top = 0
   Caption = 'Sa'#237'da de Pedidos'
   ClientHeight = 326
-  ClientWidth = 681
+  ClientWidth = 699
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,7 +16,7 @@ object FormSaidaPed: TFormSaidaPed
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 681
+    Width = 699
     Height = 131
     Align = alTop
     TabOrder = 0
@@ -113,7 +113,6 @@ object FormSaidaPed: TFormSaidaPed
           Width = 102
           Height = 65
           Align = alCustom
-          ItemIndex = 0
           Items.Strings = (
             'Nome'
             'C'#243'digo')
@@ -130,7 +129,7 @@ object FormSaidaPed: TFormSaidaPed
       end
     end
     object PageControl1: TPageControl
-      Left = 432
+      Left = 450
       Top = 1
       Width = 248
       Height = 129
@@ -212,14 +211,14 @@ object FormSaidaPed: TFormSaidaPed
   object Panel2: TPanel
     Left = 0
     Top = 131
-    Width = 681
+    Width = 699
     Height = 101
     Align = alClient
     TabOrder = 1
     object DBGridSaidaProd: TDBGrid
       Left = 1
       Top = 1
-      Width = 679
+      Width = 697
       Height = 99
       Align = alClient
       DataSource = DMDados.DSProdutos
@@ -235,14 +234,14 @@ object FormSaidaPed: TFormSaidaPed
   object Panel3: TPanel
     Left = 0
     Top = 232
-    Width = 681
+    Width = 699
     Height = 94
     Align = alBottom
     TabOrder = 2
     object DBGridItens: TDBGrid
       Left = 1
       Top = 1
-      Width = 679
+      Width = 487
       Height = 92
       Align = alClient
       DataSource = DSItens
@@ -253,6 +252,23 @@ object FormSaidaPed: TFormSaidaPed
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
     end
+    object Panel4: TPanel
+      Left = 488
+      Top = 1
+      Width = 210
+      Height = 92
+      Align = alRight
+      TabOrder = 1
+      object Button1: TButton
+        Left = 24
+        Top = 5
+        Width = 121
+        Height = 36
+        Caption = 'Finalizar Venda'
+        TabOrder = 0
+        OnClick = Button1Click
+      end
+    end
   end
   object CDSTemporario: TClientDataSet
     PersistDataPacket.Data = {
@@ -262,8 +278,8 @@ object FormSaidaPed: TFormSaidaPed
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 328
-    Top = 248
+    Left = 360
+    Top = 208
     object CDSTemporarioCOD_PRODUTO: TIntegerField
       FieldName = 'COD_PRODUTO'
     end
@@ -279,7 +295,7 @@ object FormSaidaPed: TFormSaidaPed
   end
   object DSItens: TDataSource
     DataSet = CDSTemporario
-    Left = 424
-    Top = 256
+    Left = 440
+    Top = 208
   end
 end

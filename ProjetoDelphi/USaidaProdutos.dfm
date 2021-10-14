@@ -20,44 +20,6 @@ object FormSaidaPed: TFormSaidaPed
     Height = 97
     Align = alTop
     TabOrder = 0
-    object Label3: TLabel
-      Left = 271
-      Top = 53
-      Width = 87
-      Height = 19
-      Caption = 'Quantidade:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-    end
-    object Label5: TLabel
-      Left = 271
-      Top = 24
-      Width = 92
-      Height = 23
-      Caption = 'ESTOQUE'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object LBQtd: TLabel
-      Left = 369
-      Top = 53
-      Width = 26
-      Height = 19
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-    end
     object PageControlPesquisa: TPageControl
       Left = 1
       Top = 1
@@ -72,7 +34,6 @@ object FormSaidaPed: TFormSaidaPed
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = -15
       object TabSheet2: TTabSheet
         ImageIndex = 1
         object Label1: TLabel
@@ -105,18 +66,17 @@ object FormSaidaPed: TFormSaidaPed
       end
     end
     object Panel5: TPanel
-      Left = 480
+      Left = 265
       Top = 1
-      Width = 364
+      Width = 303
       Height = 95
-      Align = alRight
+      Align = alClient
       Caption = 'Panel5'
       TabOrder = 1
-      ExplicitHeight = 129
       object DBGridSaidaProd: TDBGrid
         Left = 1
         Top = 1
-        Width = 362
+        Width = 301
         Height = 93
         Align = alClient
         DataSource = DMDados.DSProdutos
@@ -129,6 +89,52 @@ object FormSaidaPed: TFormSaidaPed
         OnCellClick = DBGridSaidaProdCellClick
       end
     end
+    object Panel6: TPanel
+      Left = 568
+      Top = 1
+      Width = 276
+      Height = 95
+      Align = alRight
+      TabOrder = 2
+      object Label5: TLabel
+        Left = 6
+        Top = 17
+        Width = 175
+        Height = 18
+        Caption = 'Quantidade em Estoque'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 6
+        Top = 41
+        Width = 87
+        Height = 19
+        Caption = 'Quantidade:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object LBQtd: TLabel
+        Left = 112
+        Top = 41
+        Width = 5
+        Height = 19
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -137,9 +143,6 @@ object FormSaidaPed: TFormSaidaPed
     Height = 111
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 307
-    ExplicitTop = 53
-    ExplicitHeight = 101
     object PageControl1: TPageControl
       Left = 1
       Top = 1
@@ -154,14 +157,13 @@ object FormSaidaPed: TFormSaidaPed
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      ExplicitHeight = 133
       object Compra: TTabSheet
-        Caption = 'Pedido '
+        Caption = 'Itens do Pedido'
         object Label2: TLabel
           Left = 19
           Top = 42
           Width = 87
-          Height = 21
+          Height = 19
           Caption = 'Quantidade:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -214,6 +216,7 @@ object FormSaidaPed: TFormSaidaPed
           Width = 89
           Height = 26
           TabOrder = 0
+          OnChange = EdQtdChange
         end
         object BtnAdd: TButton
           Left = 423
@@ -274,8 +277,6 @@ object FormSaidaPed: TFormSaidaPed
       Height = 116
       Align = alRight
       TabOrder = 1
-      ExplicitLeft = 488
-      ExplicitHeight = 92
       object Button1: TButton
         Left = 24
         Top = 5
@@ -294,7 +295,26 @@ object FormSaidaPed: TFormSaidaPed
       4C4F52080004000000000005544F54414C08000400000000000000}
     Active = True
     Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'COD_PRODUTO'
+        DataType = ftInteger
+      end
+      item
+        Name = 'QTDE'
+        DataType = ftInteger
+      end
+      item
+        Name = 'VALOR'
+        DataType = ftFloat
+      end
+      item
+        Name = 'TOTAL'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
     Params = <>
+    StoreDefs = True
     Left = 360
     Top = 208
     object CDSTemporarioCOD_PRODUTO: TIntegerField

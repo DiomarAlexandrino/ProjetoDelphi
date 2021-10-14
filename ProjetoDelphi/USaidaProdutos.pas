@@ -20,16 +20,9 @@ type
     Label1: TLabel;
     RGPesquisa: TRadioGroup;
     EdPesquisa: TEdit;
-    Label3: TLabel;
-    Label5: TLabel;
-    LBQtd: TLabel;
     DBGridSaidaProd: TDBGrid;
     DBGridItens: TDBGrid;
     CDSTemporario: TClientDataSet;
-    CDSTemporarioCOD_PRODUTO: TIntegerField;
-    CDSTemporarioQTDE: TIntegerField;
-    CDSTemporarioVALOR: TFloatField;
-    CDSTemporarioTOTAL: TFloatField;
     DSItens: TDataSource;
     Panel4: TPanel;
     Button1: TButton;
@@ -43,10 +36,19 @@ type
     EdVenda: TEdit;
     LBCod: TLabel;
     LBCodProd: TLabel;
+    Panel6: TPanel;
+    Label5: TLabel;
+    Label3: TLabel;
+    LBQtd: TLabel;
+    CDSTemporarioCOD_PRODUTO: TIntegerField;
+    CDSTemporarioQTDE: TIntegerField;
+    CDSTemporarioVALOR: TFloatField;
+    CDSTemporarioTOTAL: TFloatField;
     procedure BtnAddClick(Sender: TObject);
     procedure EdPesquisaChange(Sender: TObject);
     procedure DBGridSaidaProdCellClick(Column: TColumn);
     procedure Button1Click(Sender: TObject);
+    procedure EdQtdChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -62,8 +64,6 @@ implementation
 {$R *.dfm}
 
 uses UDMDados;
-
-
 
 procedure TFormSaidaPed.BtnAddClick(Sender: TObject);
 var
@@ -166,12 +166,40 @@ end;
 
 procedure TFormSaidaPed.DBGridSaidaProdCellClick(Column: TColumn);
 begin
+
+
   LBCodProd.Caption:=
   DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
-  LBQtd.Caption:=
-  DBGridSaidaProd.SelectedField.DataSet.FieldByName('quantidade').AsString;
    EdVenda.text :=(
   DBGridSaidaProd.SelectedField.DataSet.FieldByName('preco_venda').AsString);
+
+   //estoque
+   DMDados.FDQItensPed.SQL.Clear;
+     DMDados.FDQItensPed.SQL.Add(''
+    +'    select codigo_prod, itens_pedidos.status,        '
+    +'    sum (produtos.quantidade                         '
+    +'     - itens_pedidos.quantidade)                     '
+    +'       as estoque                                    '
+    +'       from produtos                                 '
+    +'       left join  itens_pedidos  on                  '
+    +'       itens_pedidos.produto = produtos.codigo_prod  '
+     +'      inner join  pedidos  on                  '
+    +'       itens_pedidos.pedido = pedidos.codigo_ped  '
+    +'       where status like                             '
+               + QuotedStr( 'Não')
+    +'       and  codigo_prod like                         '
+              + QuotedStr(LBCodProd.Caption)
+    +'       and ((pedidos.situacao like '
+             + QuotedStr( 'Pendente')+' )                 '
+    +'        or (pedidos.situacao like '
+            + QuotedStr('Faturado')+' ))                     '
+    +'       group by                                      '
+    +'       produtos.codigo_prod                          '
+    +'       ,status                     ' );
+     DMDados.FDQItensPed.Open();
+     LBQtd.Caption:=
+     DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
+     DMDados.FDQItensPed.Close();
 end;
 
 procedure TFormSaidaPed.EdPesquisaChange(Sender: TObject);
@@ -236,5 +264,29 @@ begin
     end;
 end;
 
+
+procedure TFormSaidaPed.EdQtdChange(Sender: TObject);
+var qtdEstoque, qtd : real;  LQTD :string;
+begin
+      qtd := 0;
+      LQTD := LBQtd.Caption;
+
+    if(LQtd.Equals('')) then
+        ShowMessage('Produto sem estoque')
+    else if(EdQtd.Text <> EmptyStr) then
+       begin
+       qtdEstoque := StrToFloat(LBQtd.Caption);
+       //ShowMessage( 'Produto '+FloatToStr(qtdEstoque));
+       qtd        := StrToFloat(EdQtd.Text);
+       if (qtd > qtdEstoque) then
+       begin
+            ShowMessage('Produto sem estoque');
+            EdQtd.Clear;
+       end;
+    end;
+
+
+
+end;
 
 end.

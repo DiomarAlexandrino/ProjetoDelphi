@@ -5,34 +5,42 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
-  Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient;
 
 type
   TFormEntProd = class(TForm)
-    Panel1: TPanel;
+    DSItens: TDataSource;
     Panel2: TPanel;
-    Panel3: TPanel;
-    DBGridEntProd: TDBGrid;
-    LBCod: TLabel;
-    LBCodProd: TLabel;
-    LBQtd: TLabel;
-    Label3: TLabel;
     PageControl1: TPageControl;
     Compra: TTabSheet;
     Label2: TLabel;
+    Label4: TLabel;
+    LBCod: TLabel;
+    LBCodProd: TLabel;
     EdQtd: TEdit;
     BtnAdd: TButton;
+    EdCusto: TEdit;
+    Panel1: TPanel;
     PageControlPesquisa: TPageControl;
     TabSheet2: TTabSheet;
     Label1: TLabel;
     RGPesquisa: TRadioGroup;
     EdPesquisa: TEdit;
-    EdCusto: TEdit;
-    Label4: TLabel;
+    Panel5: TPanel;
+    DBGridEntProd: TDBGrid;
+    Panel6: TPanel;
     Label5: TLabel;
+    Label3: TLabel;
+    Panel3: TPanel;
+    DBGridItens: TDBGrid;
+    Panel4: TPanel;
+    Button1: TButton;
+    LBQtd: TLabel;
+    CDSTemporario: TClientDataSet;
     procedure EdPesquisaChange(Sender: TObject);
     procedure DBGridEntProdCellClick(Column: TColumn);
     procedure BtnAddClick(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -49,30 +57,74 @@ implementation
 uses UDMDados;
 
 procedure TFormEntProd.BtnAddClick(Sender: TObject);
-var sql1 : string;
+var sql1 : string; total:real;
 begin
-    DMDados.FDQProdutos.Close();
+     DMDados.FDQProdutos.Close();
     DMDados.FDQProdutos.SQL.Clear;
-    //DMDados.FDQProdutos.Open();
-    sql1 :='update produtos set quantidade = '  +QuotedStr( EdQtd.Text)
-    + ', custo_unitario = '  +QuotedStr( EdCusto.Text)
-    +' where codigo_prod = ' +QuotedStr( LBCodProd.Caption);
 
-    DMDados.FDQProdutos.ExecSQL(sql1);
-     ShowMessage('Compra ralizada com Sucesso') ;
+     // sql1 :='update produtos set quantidade = '  +QuotedStr( EdQtd.Text)
+     //  + ', custo_unitario = '  +QuotedStr( EdCusto.Text)
+     // +' where codigo_prod = ' +QuotedStr( LBCodProd.Caption);
+
+     // DMDados.FDQProdutos.ExecSQL(sql1);
+     ShowMessage('Pedido realizado com Sucesso') ;
+     // temporaria
+    cdsTemporario.Append;
+    cdsTemporario.FieldByName('COD_PRODUTO').AsInteger :=
+    StrToInt(LBCodProd.Caption);
+    cdsTemporario.FieldByName('QTDE').AsInteger :=
+    StrToInt(edQtd.Text);
+    cdsTemporario.FieldByName('CUSTO').AsFloat :=
+    StrToFloat(EdCusto.Text);
+    Total := StrToInt(edQtd.Text) * StrToFloat(edCusto.Text);
+    cdsTemporario.FieldByName('TOTAL').AsFloat :=
+    Total;
+    cdsTemporario.Post;
+    CDSTemporario.Open;
 
 end;
 
 procedure TFormEntProd.DBGridEntProdCellClick(Column: TColumn);
 
-
 begin
+  LBQtd.Caption := '';
   LBCodProd.Caption:=
   DBGridEntProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
-  LBQtd.Caption:=
-  DBGridEntProd.SelectedField.DataSet.FieldByName('quantidade').AsString;
+
+    //estoque
+     DMDados.FDQItensPed.close;
+   DMDados.FDQItensPed.SQL.Clear;
+   DMDados.FDQItensPed.SQL.Add(''
+    +'    select codigo_prod, itens_pedidos.status,        '
+    +'    sum (produtos.quantidade                         '
+    +'     - itens_pedidos.quantidade)                     '
+    +'       as estoque                                    '
+    +'       from produtos                                 '
+    +'       left join  itens_pedidos  on                  '
+    +'       itens_pedidos.produto = produtos.codigo_prod  '
+     +'      inner join  pedidos  on                  '
+    +'       itens_pedidos.pedido = pedidos.codigo_ped  '
+    +'       where status like                             '
+               + QuotedStr( 'Não')
+    +'       and  codigo_prod like                         '
+              + QuotedStr(LBCodProd.Caption)
+    +'       and ((pedidos.situacao like '
+             + QuotedStr( 'Pendente')+' )                 '
+    +'        or (pedidos.situacao like '
+            + QuotedStr('Faturado')+') )                     '
+    +'       group by                                      '
+    +'       produtos.codigo_prod                          '
+    +'       ,status                     ' );
+
+     DMDados.FDQItensPed.Open();
+     LBQtd.Caption:=
+   // DBGridEntProd.SelectedField.DataSet.FieldByName('estoque').AsString;
+
+     DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
+     DMDados.FDQItensPed.Close();
 
 end;
+
 
 procedure TFormEntProd.EdPesquisaChange(Sender: TObject);
 begin
@@ -83,23 +135,23 @@ begin
       DMDados.FDQProdutos.SQL.Clear;
       DMDados.FDQProdutos.SQL.Add( ''
       +' SELECT                                         '
-      +'   produtos.codigo_prod , produtos.descricao              '
-      +'   , produtos.custo_unitario                              '
-      +'   , produtos.quantidade                             '
-      +'   ,sum( produtos.preco_venda ) AS Preco_venda          '
+      +'   produtos.codigo_prod , produtos.descricao    '
+      +'   , produtos.custo_unitario                    '
+      +'   , produtos.quantidade                        '
+      +'   ,sum( produtos.preco_venda ) AS Preco_venda  '
       +'                '
-      +'   FROM produtos                                          '
-      +'   left JOIN itens_pedidos                               '
-      +'   ON produtos.codigo_prod = itens_pedidos.produto        '
-      +'   left JOIN pedidos                                     '
-      +'   ON pedidos.codigo_ped= itens_pedidos.pedido            '
-      +'   where produtos.descricao like                            '
+      +'   FROM produtos                                '
+      +'   left JOIN itens_pedidos                      '
+      +'   ON produtos.codigo_prod = itens_pedidos.produto'
+      +'   left JOIN pedidos                            '
+      +'   ON pedidos.codigo_ped= itens_pedidos.pedido  '
+      +'   where produtos.descricao like                '
            + QuotedStr('%'+EdPesquisa.Text+'%')
-      +'   group by                                               '
-      +'      produtos.codigo_prod                                '
-      +'      ,produtos.descricao                                 '
-      +'      , produtos.custo_unitario                           '
-      +'      , produtos.quantidade                          '
+      +'   group by                                     '
+      +'      produtos.codigo_prod                      '
+      +'      ,produtos.descricao                       '
+      +'      , produtos.custo_unitario                 '
+      +'      , produtos.quantidade                     '
        );
       DMDados.FDQProdutos.Open() ;
      // LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;

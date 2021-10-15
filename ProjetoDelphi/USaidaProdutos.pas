@@ -15,14 +15,8 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    PageControlPesquisa: TPageControl;
-    TabSheet2: TTabSheet;
-    Label1: TLabel;
-    RGPesquisa: TRadioGroup;
-    EdPesquisa: TEdit;
     DBGridSaidaProd: TDBGrid;
     DBGridItens: TDBGrid;
-    CDSTemporario: TClientDataSet;
     DSItens: TDataSource;
     Panel4: TPanel;
     Button1: TButton;
@@ -40,8 +34,27 @@ type
     Label5: TLabel;
     Label3: TLabel;
     LBQtd: TLabel;
+    Panel7: TPanel;
+    EdPesquisaCliente: TEdit;
+    EdPesquisa: TEdit;
+    RGPesquisa: TRadioGroup;
+    Label1: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Panel8: TPanel;
+    PageControl2: TPageControl;
+    TabSheet1: TTabSheet;
+    Label9: TLabel;
+    Label10: TLabel;
+    LBCodCli: TLabel;
+    LBNomeCli: TLabel;
+    Label11: TLabel;
+    EDDesconto: TEdit;
+    CDSTemporario: TClientDataSet;
     CDSTemporarioCOD_PRODUTO: TIntegerField;
-    CDSTemporarioQTDE: TIntegerField;
+    CDSTemporarioQTDE: TFloatField;
+    CDSTemporarioDesconto: TFloatField;
     CDSTemporarioVALOR: TFloatField;
     CDSTemporarioTOTAL: TFloatField;
     procedure BtnAddClick(Sender: TObject);
@@ -49,6 +62,8 @@ type
     procedure DBGridSaidaProdCellClick(Column: TColumn);
     procedure Button1Click(Sender: TObject);
     procedure EdQtdChange(Sender: TObject);
+    procedure EdPesquisaClienteChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -58,12 +73,18 @@ type
 
 var
   FormSaidaPed: TFormSaidaPed;
-
+  focoEdit : string;
 implementation
 
 {$R *.dfm}
 
 uses UDMDados;
+procedure TFormSaidaPed.FormShow(Sender: TObject);
+
+begin
+    focoEdit :='';
+
+end;
 
 procedure TFormSaidaPed.BtnAddClick(Sender: TObject);
 var
@@ -83,8 +104,10 @@ begin
     cdsTemporario.Append;
     cdsTemporario.FieldByName('COD_PRODUTO').AsInteger :=
     StrToInt(LBCodProd.Caption);
-    cdsTemporario.FieldByName('QTDE').AsInteger :=
-    StrToInt(edQtd.Text);
+    cdsTemporario.FieldByName('QTDE').AsFloat :=
+    StrToFloat(edQtd.Text);
+     cdsTemporario.FieldByName('Desconto').AsFloat :=
+    StrToFloat(EDDesconto.Text);
     cdsTemporario.FieldByName('VALOR').AsFloat :=
     StrToFloat(EdVenda.Text);
     Total := StrToInt(edQtd.Text) * StrToFloat(edVenda.Text);
@@ -103,13 +126,10 @@ procedure TFormSaidaPed.Button1Click(Sender: TObject);
 var
 CodigoPedido, codigoItem : integer;
 begin
-
-
      //pega utimo cod pedido
-
      DMDados.FDQPedido.SQL.Clear;
      DMDados.FDQPedido.SQL.Add('Select MAX(codigo_ped) as CODIGOPED from Pedidos');
-      DMDados.FDQPedido.Open() ;
+     DMDados.FDQPedido.Open() ;
      CodigoPedido := DMDados.FDQPedido.FieldByName('CODIGOPED').AsInteger;
      DMDados.FDQPedido.Close;
      //limpa sql
@@ -120,6 +140,8 @@ begin
      DMDados.FDQPedido.Append;
      DMDados.FDQPedido.FieldByName('codigo_ped').AsInteger :=
      CodigoPedido + 1;
+     DMDados.FDQPedido.FieldByName('FK_CLIENTE').AsInteger :=
+     StrToInt(LBCodCli.Caption);
      DMDados.FDQPedido.Post;
 
   cdsTemporario.First; // move para o primeiro registro da tabela temporária
@@ -145,8 +167,12 @@ begin
       CodigoPedido;
       DMDados.FDQItensPed.FieldByName('PRODUTO').AsInteger :=
       cdsTemporario.FieldByName('COD_PRODUTO').AsInteger;
-      DMDados.FDQItensPed.FieldByName('Quantidade').AsInteger :=
-      cdsTemporario.FieldByName('QTDE').AsInteger;
+      DMDados.FDQItensPed.FieldByName('Quantidade').AsFloat :=
+      cdsTemporario.FieldByName('QTDE').AsFloat;
+         DMDados.FDQItensPed.FieldByName('Desconto').AsFloat :=
+      cdsTemporario.FieldByName('Desconto').AsFloat;
+      DMDados.FDQItensPed.FieldByName('Tipo').AsString := 'S';
+      DMDados.FDQItensPed.FieldByName('Status').AsString := 'Não';
 
     //DMDados.FDQItensPed.FieldByName('VALOR').AsFloat :=
      // cdsTemporario.FieldByName('VALOR').AsFloat;
@@ -168,42 +194,56 @@ procedure TFormSaidaPed.DBGridSaidaProdCellClick(Column: TColumn);
 begin
 
 
-  LBCodProd.Caption:=
-  DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
-   EdVenda.text :=(
-  DBGridSaidaProd.SelectedField.DataSet.FieldByName('preco_venda').AsString);
+   if (focoEdit.Equals('EdPesquisa') and (LBCodCli.Caption <>'') )then
+      begin
 
-   //estoque
-   DMDados.FDQItensPed.SQL.Clear;
-     DMDados.FDQItensPed.SQL.Add(''
-    +'    select codigo_prod, itens_pedidos.status,        '
-    +'    sum (produtos.quantidade                         '
-    +'     - itens_pedidos.quantidade)                     '
-    +'       as estoque                                    '
-    +'       from produtos                                 '
-    +'       left join  itens_pedidos  on                  '
-    +'       itens_pedidos.produto = produtos.codigo_prod  '
-     +'      inner join  pedidos  on                  '
-    +'       itens_pedidos.pedido = pedidos.codigo_ped  '
-    +'       where status like                             '
-               + QuotedStr( 'Não')
-    +'       and  codigo_prod like                         '
-              + QuotedStr(LBCodProd.Caption)
-    +'       and ((pedidos.situacao like '
-             + QuotedStr( 'Pendente')+' )                 '
-    +'        or (pedidos.situacao like '
-            + QuotedStr('Faturado')+' ))                     '
-    +'       group by                                      '
-    +'       produtos.codigo_prod                          '
-    +'       ,status                     ' );
-     DMDados.FDQItensPed.Open();
-     LBQtd.Caption:=
-     DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
-     DMDados.FDQItensPed.Close();
+       LBCodProd.Caption:=
+       DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
+       EdVenda.text :=(
+       DBGridSaidaProd.SelectedField.DataSet.FieldByName('preco_venda').AsString);
+
+      //estoque
+      DMDados.FDQItensPed.SQL.Clear;
+      DMDados.FDQItensPed.SQL.Add(''
+       +'    select codigo_prod, itens_pedidos.status,        '
+       +'    sum (produtos.quantidade                         '
+       +'     - itens_pedidos.quantidade)                     '
+       +'       as estoque                                    '
+       +'       from produtos                                 '
+       +'       left join  itens_pedidos  on                  '
+       +'       itens_pedidos.produto = produtos.codigo_prod  '
+       +'      inner join  pedidos  on                  '
+       +'       itens_pedidos.pedido = pedidos.codigo_ped  '
+       +'       where status like                             '
+                  + QuotedStr( 'Não')
+       +'       and  codigo_prod like                         '
+                 + QuotedStr(LBCodProd.Caption)
+       +'       and ((pedidos.situacao like '
+                + QuotedStr( 'Pendente')+' )                 '
+       +'        or (pedidos.situacao like '
+               + QuotedStr('Faturado')+' ))                     '
+       +'       group by                                      '
+       +'       produtos.codigo_prod                          '
+       +'       ,status                     ' );
+        DMDados.FDQItensPed.Open();
+        LBQtd.Caption:=
+        DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
+        DMDados.FDQItensPed.Close();
+     end
+     else if (focoEdit.Equals('EdPesquisaCliente')) then
+     begin
+        LBCodCli.Caption:=
+       DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_cli').AsString;
+       LBNomeCli.Caption :=(
+       DBGridSaidaProd.SelectedField.DataSet.FieldByName('nome').AsString);
+     end;
+
 end;
 
 procedure TFormSaidaPed.EdPesquisaChange(Sender: TObject);
 begin
+  focoEdit := ActiveControl.Name;
+  //ShowMessage(focoEdit);
   if(RGPesquisa.ItemIndex = 0)
    THEN
    begin
@@ -239,24 +279,24 @@ begin
       DMDados.FDQProdutos.close() ;
       DMDados.FDQProdutos.SQL.Clear;
       DMDados.FDQProdutos.SQL.Add( ''
-      +' SELECT   FIRST 10                                      '
-      +'   produtos.codigo_prod , produtos.descricao              '
-      +'   , produtos.custo_unitario                              '
-      +'   , produtos.quantidade                             '
-      +'   ,sum( produtos.preco_venda ) AS Preco_venda          '
+      +' SELECT   FIRST 10                                  '
+      +'   produtos.codigo_prod , produtos.descricao        '
+      +'   , produtos.custo_unitario                        '
+      +'   , produtos.quantidade                            '
+      +'   ,sum( produtos.preco_venda ) AS Preco_venda      '
       +'                '
-      +'   FROM produtos                                          '
-      +'   left JOIN itens_pedidos                               '
-      +'   ON produtos.codigo_prod = itens_pedidos.produto        '
-      +'   left JOIN pedidos                                     '
-      +'   ON pedidos.codigo_ped= itens_pedidos.pedido            '
-      +'   where produtos.codigo_prod like                            '
+      +'   FROM produtos                                    '
+      +'   left JOIN itens_pedidos                          '
+      +'   ON produtos.codigo_prod = itens_pedidos.produto  '
+      +'   left JOIN pedidos                                '
+      +'   ON pedidos.codigo_ped= itens_pedidos.pedido      '
+      +'   where produtos.codigo_prod like                  '
            + QuotedStr(EdPesquisa.Text)
-      +'   group by                                               '
-      +'      produtos.codigo_prod                                '
-      +'      ,produtos.descricao                                 '
-      +'      , produtos.custo_unitario                           '
-      +'      , produtos.quantidade                          '
+      +'   group by                                         '
+      +'      produtos.codigo_prod                          '
+      +'      ,produtos.descricao                           '
+      +'      , produtos.custo_unitario                     '
+      +'      , produtos.quantidade                         '
        );
       DMDados.FDQProdutos.Open() ;
      // LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
@@ -264,6 +304,34 @@ begin
     end;
 end;
 
+
+procedure TFormSaidaPed.EdPesquisaClienteChange(Sender: TObject);
+begin
+    focoEdit := ActiveControl.Name;
+    // ShowMessage(focoEdit);
+   if(RGPesquisa.ItemIndex = 0)
+   THEN
+   begin
+      DMDados.FDQProdutos.close() ;
+      DMDados.FDQProdutos.SQL.Clear;
+      DMDados.FDQProdutos.SQL.Add( ''
+      +' SELECT  FIRST 10  * from clientes'
+      +' where clientes.nome like        '
+      +  QuotedStr('%'+EdPesquisaCliente.Text+'%'));
+        DMDados.FDQProdutos.Open() ;
+   end
+   else if(RGPesquisa.ItemIndex = 1)
+   THEN
+   begin
+      DMDados.FDQProdutos.close() ;
+      DMDados.FDQProdutos.SQL.Clear;
+      DMDados.FDQProdutos.SQL.Add( ''
+      +' SELECT  FIRST 10  * from clientes'
+      +' where clientes.codigo_cli like        '
+      +  QuotedStr(EdPesquisaCliente.Text));
+        DMDados.FDQProdutos.Open() ;
+   end;
+end;
 
 procedure TFormSaidaPed.EdQtdChange(Sender: TObject);
 var qtdEstoque, qtd : real;  LQTD :string;
@@ -288,5 +356,7 @@ begin
 
 
 end;
+
+
 
 end.

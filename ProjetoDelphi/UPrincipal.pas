@@ -112,12 +112,13 @@ begin
 end;
 
 procedure TFormControlePedidos.FormShow(Sender: TObject);
+var sql1 : string;
 begin
 
    DMDados.FDQProdutoReceita.close() ;
-   DMDados.FDQProdutoReceita.SQL.Add( ''
-   +' SELECT   FIRST 1                                         '
-   +'   produtos.codigo_prod , produtos.descricao              '
+   DMDados.FDQProdutoReceita.SQL.Add( ' SELECT   FIRST 1   '  );
+
+   sql1 :='   produtos.codigo_prod , produtos.descricao        '
    +'   , produtos.custo_unitario                              '
    +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,         '
    +'   sum((( produtos.preco_venda * itens_pedidos.quantidade) - '
@@ -130,41 +131,25 @@ begin
    +'   ON pedidos.codigo_ped= itens_pedidos.pedido            '
    +'   where pedidos.situacao like                            '
         + QuotedStr('Faturado')
+   +'   and status like                                        '
+        + QuotedStr( 'Não')
+   +'   and tipo like                                          '
+        + QuotedStr( 'S')
    +'   group by                                               '
    +'      produtos.codigo_prod                                '
    +'      ,produtos.descricao                                 '
    +'      , produtos.custo_unitario                           '
-   +'    --  ,Lucro                                             '
+   +'    --  ,Lucro                                            '
    +'       order by                                           '
-   +'       5  desc  ' );
+   +'       5  desc  ' ;
+    DMDados.FDQProdutoReceita.SQL.Add(sql1);
    DMDados.FDQProdutoReceita.Open() ;
    LBMaiorReceita.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
    DMDados.FDQProdutoReceita.close() ;
 
    DMDados.FDQProdutoReceita.SQL.Clear();
-   DMDados.FDQProdutoReceita.SQL.Add( ''
-   +' SELECT   FIRST 1                                          '
-   +' SKIP 1                                                    '
-   +'   produtos.codigo_prod , produtos.descricao               '
-   +'   , produtos.custo_unitario                               '
-   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,          '
-   +'   ((( produtos.preco_venda * itens_pedidos.quantidade) -  '
-   +'   ( produtos.custo_unitario * itens_pedidos.quantidade)   '
-   +'   - itens_pedidos.desconto)) as Lucro                     '
-   +'   FROM produtos                                           '
-   +'   INNER JOIN itens_pedidos                                '
-   +'   ON produtos.codigo_prod = itens_pedidos.produto         '
-   +'   INNER JOIN pedidos                                      '
-   +'   ON pedidos.codigo_ped= itens_pedidos.pedido             '
-   +'   where pedidos.situacao like                             '
-        + QuotedStr('Faturado')
-   +'   group by                                                '
-   +'       produtos.codigo_prod                                '
-   +'      ,produtos.descricao                                  '
-   +'      , produtos.custo_unitario                            '
-   +'       ,Lucro                                              '
-   +'       order by                                            '
-   +'       5  desc  ' );
+   DMDados.FDQProdutoReceita.SQL.Add( 'SELECT   FIRST 1 SKIP 1');
+   DMDados.FDQProdutoReceita.SQL.Add(sql1);
    DMDados.FDQProdutoReceita.Open() ;
    LBReceitaProd2.Caption := DMDados.FDQProdutoReceita.FieldByName('DESCRICAO').AsString;
 
@@ -172,30 +157,34 @@ begin
    DMDados.FDQProdutoReceita.close() ;
    DMDados.FDQProdutoReceita.SQL.Clear();
    DMDados.FDQProdutoReceita.SQL.Add( ''
-   +'   SELECT FIRST 1                                                  '
-   +'     clientes.codigo_cli , clientes.nome                           '
-   +'   , produtos.custo_unitario ,pedidos.situacao                     '
-   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,                  '
-   +'     ((( produtos.preco_venda * itens_pedidos.quantidade) -        '
-   +'     ( produtos.custo_unitario * itens_pedidos.quantidade)-        '
-   +'   itens_pedidos.desconto)) as Lucro                               '
-   +'   FROM produtos                                                   '
-   +'   INNER JOIN itens_pedidos                                        '
-   +'   ON produtos.codigo_prod = itens_pedidos.produto                 '
-   +'   INNER JOIN pedidos                                              '
-   +'   ON pedidos.codigo_ped= itens_pedidos.pedido                     '
-   +'   INNER JOIN clientes                                             '
-   +'   ON pedidos.fk_cliente = clientes.codigo_cli                     '
-   +'   where pedidos.situacao like                                     '
+   +'   SELECT FIRST 1                                            '
+   +'     clientes.codigo_cli , clientes.nome                     '
+   +'   , produtos.custo_unitario ,pedidos.situacao               '
+   +'   ,sum( produtos.preco_venda ) AS Preco_venda  ,            '
+   +'     ((( produtos.preco_venda * itens_pedidos.quantidade) -  '
+   +'     ( produtos.custo_unitario * itens_pedidos.quantidade)-  '
+   +'   itens_pedidos.desconto)) as Lucro                         '
+   +'   FROM produtos                                             '
+   +'   INNER JOIN itens_pedidos                                  '
+   +'   ON produtos.codigo_prod = itens_pedidos.produto           '
+   +'   INNER JOIN pedidos                                        '
+   +'   ON pedidos.codigo_ped= itens_pedidos.pedido               '
+   +'   INNER JOIN clientes                                       '
+   +'   ON pedidos.fk_cliente = clientes.codigo_cli               '
+   +'   where pedidos.situacao like                               '
         + QuotedStr('Faturado')
-   +'     group by                                                      '
-   +'       clientes.codigo_cli                                         '
-   +'        ,clientes.nome                                             '
-   +'        , produtos.custo_unitario                                  '
-   +'        , pedidos.situacao                                         '
-   +'         ,Lucro                                                    '
-   +'      order by                                                     '
-   +'         5  desc                                                   ' );
+   +'   and status like                                           '
+        + QuotedStr( 'Não')
+   +'   and tipo like                                             '
+        + QuotedStr( 'S')
+   +'     group by                                                '
+   +'       clientes.codigo_cli                                   '
+   +'        ,clientes.nome                                       '
+   +'        , produtos.custo_unitario                            '
+   +'        , pedidos.situacao                                   '
+   +'         ,Lucro                                                   '
+   +'      order by                                                    '
+   +'         5  desc                                                  ' );
    DMDados.FDQProdutoReceita.Open() ;
    LBClienteLucro.Caption := DMDados.FDQProdutoReceita.FieldByName('NOME').AsString;
    DMDados.FDQProdutoReceita.close() ;
@@ -235,18 +224,21 @@ begin
          begin
            DMDados.FDQPedido.SQL.Clear;
            DMDados.FDQPedido.Close;
-           DMDados.FDQPedido.SQL.Add( 'select clientes.codigo_cli, clientes.nome  '
-            +' , sum(itens_pedidos.quantidade) as qtd_itens  '
-            +' , sum(itens_pedidos.quantidade * produtos.preco_venda) AS TOTAL '
-            +'  from pedidos , clientes ,itens_pedidos ,produtos  '
-            +'  where clientes.codigo_cli = pedidos.fk_cliente '
-                  +'and pedidos.codigo_ped   = itens_pedidos.pedido '
-                  +'and produtos.codigo_prod =  itens_pedidos.produto  ' );
-                // +'and  clientes.codigo_cli like ' );
-           //  DMDados.FDQPedido.SQL.Add(  QuotedStr(  EdPesquisaPedido.Text ));
-             DMDados.FDQPedido.SQL.Add( ' group by '
-              +' clientes.codigo_cli  '
-            +' , clientes.nome ');
+           DMDados.FDQPedido.SQL.Add( 'select clientes.codigo_cli, clientes.nome '
+            +'  , sum(itens_pedidos.quantidade) as qtd_itens                     '
+            +'  , sum(itens_pedidos.quantidade * produtos.preco_venda) AS TOTAL  '
+            +'  from pedidos , clientes ,itens_pedidos ,produtos                 '
+            +'  where clientes.codigo_cli = pedidos.fk_cliente                   '
+            +'  and pedidos.codigo_ped   = itens_pedidos.pedido                  '
+            +'  and produtos.codigo_prod =  itens_pedidos.produto                '
+            +'      and status like                                              '
+            +       QuotedStr( 'Não')
+            +'      and tipo like                                                '
+            +       QuotedStr( 'S'));
+            DMDados.FDQPedido.SQL.Add(
+             ' group by             '
+            +' clientes.codigo_cli  '
+            +' , clientes.nome      ');
             DMDados.FDQPedido.Open();
             EdPesquisaPedido.Visible := false;
             lbpesquisa.Visible := false;
@@ -269,6 +261,10 @@ begin
            +'      and pedidos.codigo_ped   = itens_pedidos.pedido   '
            +'      and pedidos.situacao like                         '
            +       QuotedStr( 'Pendente' )
+           +'      and status like                                   '
+           +       QuotedStr( 'Não')
+           +'      and tipo like                                     '
+           +       QuotedStr( 'S')
            +'      group by                                          '
            +'      clientes.codigo_cli, pedidos.codigo_ped           '
            +'      ,pedidos.situacao , itens_pedidos.quantidade      '

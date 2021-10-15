@@ -95,9 +95,9 @@ object FormEntProd: TFormEntProd
           TabOrder = 0
         end
         object BtnAdd: TButton
-          Left = 423
+          Left = 465
           Top = 35
-          Width = 98
+          Width = 140
           Height = 28
           Caption = 'Adicionar'
           Font.Charset = DEFAULT_CHARSET
@@ -124,16 +124,16 @@ object FormEntProd: TFormEntProd
         end
         object Panel3: TPanel
           Left = 0
-          Top = 168
+          Top = 80
           Width = 655
-          Height = 122
+          Height = 210
           Align = alBottom
           TabOrder = 3
           object DBGridItens: TDBGrid
             Left = 1
             Top = 1
             Width = 443
-            Height = 120
+            Height = 208
             Align = alClient
             DataSource = DSItens
             TabOrder = 0
@@ -147,15 +147,16 @@ object FormEntProd: TFormEntProd
             Left = 444
             Top = 1
             Width = 210
-            Height = 120
+            Height = 208
             Align = alRight
             TabOrder = 1
+            ExplicitHeight = 136
             object Button1: TButton
               Left = 24
               Top = 5
-              Width = 121
+              Width = 137
               Height = 36
-              Caption = 'Finalizar Venda'
+              Caption = 'Finalizar Pedido'
               TabOrder = 0
             end
           end
@@ -212,6 +213,7 @@ object FormEntProd: TFormEntProd
           Height = 27
           TabOrder = 1
           OnChange = EdPesquisaChange
+          OnEnter = EdPesquisaEnter
         end
       end
     end
@@ -287,15 +289,51 @@ object FormEntProd: TFormEntProd
     end
   end
   object DSItens: TDataSource
-    Left = 440
-    Top = 208
+    DataSet = CDSTemporario
+    Left = 504
+    Top = 360
   end
   object CDSTemporario: TClientDataSet
+    PersistDataPacket.Data = {
+      570000009619E0BD01000000180000000400000000000300000057000B434F44
+      5F50524F4455544F040001000000000004515444450800040000000000054355
+      53544F080004000000000005544F54414C08000400000000000000}
+    Active = True
     Aggregates = <>
-    MasterSource = DSItens
-    PacketRecords = 0
+    AggregatesActive = True
+    FieldDefs = <
+      item
+        Name = 'COD_PRODUTO'
+        DataType = ftInteger
+      end
+      item
+        Name = 'QTDE'
+        DataType = ftFloat
+      end
+      item
+        Name = 'CUSTO'
+        DataType = ftFloat
+      end
+      item
+        Name = 'TOTAL'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
     Params = <>
-    Left = 349
-    Top = 215
+    StoreDefs = True
+    Left = 549
+    Top = 359
+    object CDSTemporarioCOD_PRODUTO: TIntegerField
+      FieldName = 'COD_PRODUTO'
+    end
+    object CDSTemporarioQTDE: TFloatField
+      FieldName = 'QTDE'
+    end
+    object CDSTemporarioCUSTO: TFloatField
+      FieldName = 'CUSTO'
+    end
+    object CDSTemporarioTOTAL: TFloatField
+      FieldName = 'TOTAL'
+    end
   end
 end

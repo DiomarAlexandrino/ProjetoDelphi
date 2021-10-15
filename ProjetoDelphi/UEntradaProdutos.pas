@@ -37,9 +37,14 @@ type
     Button1: TButton;
     LBQtd: TLabel;
     CDSTemporario: TClientDataSet;
+    CDSTemporarioCOD_PRODUTO: TIntegerField;
+    CDSTemporarioQTDE: TFloatField;
+    CDSTemporarioCUSTO: TFloatField;
+    CDSTemporarioTOTAL: TFloatField;
     procedure EdPesquisaChange(Sender: TObject);
     procedure DBGridEntProdCellClick(Column: TColumn);
     procedure BtnAddClick(Sender: TObject);
+    procedure EdPesquisaEnter(Sender: TObject);
 
   private
     { Private declarations }
@@ -72,8 +77,8 @@ begin
     cdsTemporario.Append;
     cdsTemporario.FieldByName('COD_PRODUTO').AsInteger :=
     StrToInt(LBCodProd.Caption);
-    cdsTemporario.FieldByName('QTDE').AsInteger :=
-    StrToInt(edQtd.Text);
+    cdsTemporario.FieldByName('QTDE').AsFloat :=
+    StrToFloat(edQtd.Text);
     cdsTemporario.FieldByName('CUSTO').AsFloat :=
     StrToFloat(EdCusto.Text);
     Total := StrToInt(edQtd.Text) * StrToFloat(edCusto.Text);
@@ -90,7 +95,8 @@ begin
   LBQtd.Caption := '';
   LBCodProd.Caption:=
   DBGridEntProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
-
+  EdCusto.Text :=
+  DBGridEntProd.SelectedField.DataSet.FieldByName('custo_unitario').AsString;
     //estoque
      DMDados.FDQItensPed.close;
    DMDados.FDQItensPed.SQL.Clear;
@@ -102,24 +108,24 @@ begin
     +'       from produtos                                 '
     +'       left join  itens_pedidos  on                  '
     +'       itens_pedidos.produto = produtos.codigo_prod  '
-     +'      inner join  pedidos  on                  '
-    +'       itens_pedidos.pedido = pedidos.codigo_ped  '
+    +'      inner join  pedidos  on                        '
+    +'       itens_pedidos.pedido = pedidos.codigo_ped     '
     +'       where status like                             '
                + QuotedStr( 'Não')
+   +'        and tipo like                               '
+               + QuotedStr( 'S')
     +'       and  codigo_prod like                         '
               + QuotedStr(LBCodProd.Caption)
     +'       and ((pedidos.situacao like '
-             + QuotedStr( 'Pendente')+' )                 '
+             + QuotedStr( 'Pendente')+' )                  '
     +'        or (pedidos.situacao like '
-            + QuotedStr('Faturado')+') )                     '
+            + QuotedStr('Faturado')+') )                   '
     +'       group by                                      '
     +'       produtos.codigo_prod                          '
     +'       ,status                     ' );
 
      DMDados.FDQItensPed.Open();
      LBQtd.Caption:=
-   // DBGridEntProd.SelectedField.DataSet.FieldByName('estoque').AsString;
-
      DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
      DMDados.FDQItensPed.Close();
 
@@ -188,5 +194,10 @@ begin
     end;
 
   end;
+
+procedure TFormEntProd.EdPesquisaEnter(Sender: TObject);
+begin
+  EdPesquisa.Clear;
+end;
 
 end.

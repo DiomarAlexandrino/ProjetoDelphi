@@ -124,7 +124,8 @@ end;
 
 procedure TFormSaidaPed.Button1Click(Sender: TObject);
 var
-CodigoPedido, codigoItem : integer;
+CodigoProduto,CodigoPedido, codigoItem : integer;  somaProduto: Double;
+
 begin
      //pega utimo cod pedido
      DMDados.FDQPedido.SQL.Clear;
@@ -142,58 +143,76 @@ begin
      CodigoPedido + 1;
      DMDados.FDQPedido.FieldByName('FK_CLIENTE').AsInteger :=
      StrToInt(LBCodCli.Caption);
+     DMDados.FDQPedido.FieldByName('SITUACAO').AsString :=
+     'FATURADO';
      DMDados.FDQPedido.Post;
 
-  cdsTemporario.First; // move para o primeiro registro da tabela temporária
-  while not (cdsTemporario.EOF) do // laço de repetição
-  begin
-  /// copia o ultimo codigo do item
-     DMDados.FDQItensPed.SQL.Clear;
-     DMDados.FDQItensPed.SQL.Add('Select MAX(codigo_item) as CodigoItem from Itens_Pedidos');
-     DMDados.FDQItensPed.Open;
-     codigoItem := DMDados.FDQItensPed.FieldByName('CodigoItem').AsInteger;
-     DMDados.FDQItensPed.Close;
-     //limpa sql
-     DMDados.FDQItensPed.SQL.Clear;
-     DMDados.FDQItensPed.SQL.Add('Select * from itens_pedidos');
+      cdsTemporario.First; // move para o primeiro registro da tabela temporária
+      while not (cdsTemporario.EOF) do // laço de repetição
+      begin
+      /// copia o ultimo codigo do item
+         DMDados.FDQItensPed.SQL.Clear;
+         DMDados.FDQItensPed.SQL.Add('Select MAX(codigo_item) as CodigoItem from Itens_Pedidos');
+         DMDados.FDQItensPed.Open;
+         codigoItem := DMDados.FDQItensPed.FieldByName('CodigoItem').AsInteger;
+         DMDados.FDQItensPed.Close;
+         //limpa sql
+         DMDados.FDQItensPed.SQL.Clear;
+         DMDados.FDQItensPed.SQL.Add('Select * from itens_pedidos');
 
-     DMDados.FDQItensPed.Open();
-     DMDados.FDQItensPed.Append; // coloca a tabela física em modo de inserção
-    // copia os valores da tabela temporária para a tabela física
+         DMDados.FDQItensPed.Open();
+         DMDados.FDQItensPed.Append; // coloca a tabela física em modo de inserção
+        // copia os valores da tabela temporária para a tabela física
 
-      DMDados.FDQItensPed.FieldByName('codigo_item').AsInteger :=
-      codigoItem + 1;
-      DMDados.FDQItensPed.FieldByName('Pedido').AsInteger :=
-      CodigoPedido;
-      DMDados.FDQItensPed.FieldByName('PRODUTO').AsInteger :=
-      cdsTemporario.FieldByName('COD_PRODUTO').AsInteger;
-      DMDados.FDQItensPed.FieldByName('Quantidade').AsFloat :=
-      cdsTemporario.FieldByName('QTDE').AsFloat;
-         DMDados.FDQItensPed.FieldByName('Desconto').AsFloat :=
-      cdsTemporario.FieldByName('Desconto').AsFloat;
-      DMDados.FDQItensPed.FieldByName('Tipo').AsString := 'S';
-      DMDados.FDQItensPed.FieldByName('Status').AsString := 'Não';
+          DMDados.FDQItensPed.FieldByName('codigo_item').AsInteger :=
+          codigoItem + 1;
+          DMDados.FDQItensPed.FieldByName('Pedido').AsInteger :=
+          CodigoPedido;
+          DMDados.FDQItensPed.FieldByName('PRODUTO').AsInteger :=
+          cdsTemporario.FieldByName('COD_PRODUTO').AsInteger;
+          DMDados.FDQItensPed.FieldByName('Quantidade').AsFloat :=
+          cdsTemporario.FieldByName('QTDE').AsFloat;
+          DMDados.FDQItensPed.FieldByName('Desconto').AsFloat :=
+          cdsTemporario.FieldByName('Desconto').AsFloat;
+          DMDados.FDQItensPed.FieldByName('Tipo').AsString := 'S';
+          DMDados.FDQItensPed.FieldByName('Status').AsString := 'Não';
+          //atualiza produto
+          CodigoProduto:= cdsTemporario.FieldByName('COD_PRODUTO').AsInteger;
+           DMDados.FDQProdutos.close;
+           DMDados.FDQProdutos.Sql.clear;
+           //pesquisa do codigo
+            DMDados.FDQProdutos.sql.Add('select * from Produtos'
+            +' WHERE (codigo_prod like '
+            +  CodigoProduto.ToString +' )');
 
-    //DMDados.FDQItensPed.FieldByName('VALOR').AsFloat :=
-     // cdsTemporario.FieldByName('VALOR').AsFloat;
+                   falta gravara o prodto
+             ShowMessage( 'COD_PRODUTO  ' +cdsTemporario.FieldByName('COD_PRODUTO').AsString);
+            DMDados.FDQProdutos.open;
+            somaProduto:=
+            DMDados.FDQProdutos.FieldByName('Quantidade').AsFloat -
+            cdsTemporario.FieldByName('QTDE').AsFloat ;
+            ShowMessage( 'Quantidade ' + DMDados.FDQProdutos.FieldByName('Quantidade').AsString) ;
+            ShowMessage('Qtde '+cdsTemporario.FieldByName('QTDE').AsString) ;
+            ShowMessage(somaProduto.ToString) ;
+            DMDados.FDQProdutos.Edit;
+        //    DMDados.FDQProdutos.ExecSQL('  UPDATE produtos SET quantidade =
 
-     //DMDados.FDQItensPed.FieldByName('TOTAL').AsFloat :=
-     // cdsTemporario.FieldByName('TOTAL').AsFloat;
+         //   +' WHERE (codigo_prod like'
+          //  +  QuotedStr('4')+ ' )' );
+             
 
-        DMDados.FDQItensPed.Post; // grava o item da venda
-        
-     // deleta o registro da tabela temporária
-     // isso fará com que o próximo registro seja lido
-      cdsTemporario.Delete;
-  end;
+            DMDados.FDQItensPed.Post; // grava o item da venda
 
-  // persiste os itens no banco de dados
+         // deleta o registro da tabela temporária
+         // isso fará com que o próximo registro seja lido
+          cdsTemporario.Delete;
+      end;
+
+      // persiste os itens no banco de dados
 end;
 
 procedure TFormSaidaPed.DBGridSaidaProdCellClick(Column: TColumn);
 begin
-
-
    if (focoEdit.Equals('EdPesquisa') and (LBCodCli.Caption <>'') )then
       begin
 
@@ -243,7 +262,6 @@ end;
 procedure TFormSaidaPed.EdPesquisaChange(Sender: TObject);
 begin
   focoEdit := ActiveControl.Name;
-  //ShowMessage(focoEdit);
   if(RGPesquisa.ItemIndex = 0)
    THEN
    begin
@@ -308,7 +326,6 @@ end;
 procedure TFormSaidaPed.EdPesquisaClienteChange(Sender: TObject);
 begin
     focoEdit := ActiveControl.Name;
-    // ShowMessage(focoEdit);
    if(RGPesquisa.ItemIndex = 0)
    THEN
    begin

@@ -21,7 +21,6 @@ object FormSaidaPed: TFormSaidaPed
     Height = 151
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 648
     object Panel5: TPanel
       Left = 425
       Top = 1
@@ -30,8 +29,6 @@ object FormSaidaPed: TFormSaidaPed
       Align = alClient
       Caption = 'Panel5'
       TabOrder = 0
-      ExplicitLeft = 593
-      ExplicitWidth = 106
       object DBGridSaidaProd: TDBGrid
         Left = 1
         Top = 1
@@ -55,8 +52,6 @@ object FormSaidaPed: TFormSaidaPed
       Height = 149
       Align = alRight
       TabOrder = 1
-      ExplicitLeft = 488
-      ExplicitHeight = 128
       object Label5: TLabel
         Left = 6
         Top = 41
@@ -121,7 +116,7 @@ object FormSaidaPed: TFormSaidaPed
         Left = 96
         Top = 8
         Width = 142
-        Height = 23
+        Height = 19
         Caption = 'Pesquisar Cliente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -134,7 +129,7 @@ object FormSaidaPed: TFormSaidaPed
         Left = 252
         Top = 10
         Width = 129
-        Height = 23
+        Height = 21
         TabOrder = 0
         OnChange = EdPesquisaClienteChange
       end
@@ -142,7 +137,7 @@ object FormSaidaPed: TFormSaidaPed
         Left = 251
         Top = 36
         Width = 129
-        Height = 24
+        Height = 21
         TabOrder = 1
         OnChange = EdPesquisaChange
       end
@@ -237,7 +232,6 @@ object FormSaidaPed: TFormSaidaPed
     Height = 115
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 146
     object PageControl1: TPageControl
       Left = 1
       Top = 1
@@ -252,8 +246,6 @@ object FormSaidaPed: TFormSaidaPed
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 646
-      ExplicitHeight = 133
       object Compra: TTabSheet
         Caption = 'Itens do Pedido'
         object Label2: TLabel
@@ -324,7 +316,7 @@ object FormSaidaPed: TFormSaidaPed
           Left = 304
           Top = 0
           Width = 89
-          Height = 25
+          Height = 26
           TabOrder = 0
           OnChange = EdQtdChange
         end
@@ -347,7 +339,7 @@ object FormSaidaPed: TFormSaidaPed
           Left = 117
           Top = 30
           Width = 88
-          Height = 27
+          Height = 26
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15

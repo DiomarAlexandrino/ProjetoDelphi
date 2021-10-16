@@ -319,6 +319,7 @@ object FormSaidaPed: TFormSaidaPed
           Height = 26
           TabOrder = 0
           OnChange = EdQtdChange
+          OnEnter = EdQtdEnter
         end
         object BtnAdd: TButton
           Left = 419
@@ -403,7 +404,7 @@ object FormSaidaPed: TFormSaidaPed
         Height = 13
         Caption = 'Pesquisar Cliente'
       end
-      object Button1: TButton
+      object BtnFimVenda: TButton
         Left = 12
         Top = 5
         Width = 125
@@ -416,7 +417,7 @@ object FormSaidaPed: TFormSaidaPed
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
-        OnClick = Button1Click
+        OnClick = BtnFimVendaClick
       end
     end
   end

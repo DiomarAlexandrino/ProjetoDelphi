@@ -128,7 +128,7 @@ end;
 procedure TFormSaidaPed.BtnFimVendaClick(Sender: TObject);
 var
 CodigoProduto,CodigoPedido, codigoItem : integer;
-itensEntrada, itensSaida, estoque, total, somaProduto: Double;
+ total, somaProduto: Double;
 
 begin
      //pega utimo cod pedido
@@ -216,54 +216,23 @@ begin
 end;
 
 procedure TFormSaidaPed.DBGridSaidaProdCellClick(Column: TColumn);
+var
+quantidade, itensEntrada, itensSaida, estoque : real;
 begin
    if (focoEdit.Equals('EdPesquisa') and (LBCodCli.Caption <>'') )then
       begin
 
        LBCodProd.Caption:=
-       DBGridSaidaProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
-       EdVenda.text :=(
-       DBGridSaidaProd.SelectedField.DataSet.FieldByName('preco_venda').AsString);
-
-      //estoque
-      DMDados.FDQItensPed.SQL.Clear;
-      DMDados.FDQItensPed.SQL.Add(''+
-      DMDados.FDQItensPed.SQL.Add('                     '
-     +'    select itens_pedidos.produto,                '
-     +'   sum(itens_pedidos.quantidade) as qtdsaida     '
-     +'   from itens_pedidos                            '
-     +'   where   itens_pedidos.tipo =                  '
-     +     QuotedStr('E')
-     +'   and  produto like                             '
-     +   QuotedStr(LBCodProd.Caption.toString)
-     +'  group by produto                               ' );
-
-      itensEntrada :=
-
-    //   +'    select codigo_prod, itens_pedidos.status,        '
-    //   +'    sum (produtos.quantidade                         '
-   //    +'     - itens_pedidos.quantidade)                     '
-    //   +'       as estoque                                    '
-    //   +'       from produtos                                 '
-    ///   +'       left join  itens_pedidos  on                  '
-    //   +'       itens_pedidos.produto = produtos.codigo_prod  '
-    //   +'      inner join  pedidos  on                  '
-     //  +'       itens_pedidos.pedido = pedidos.codigo_ped  '
-     //  +'       where status like                             '
-       //           + QuotedStr( 'Não')
-      // +'       and  codigo_prod like                         '
-                 + QuotedStr(LBCodProd.Caption)
-      // +'       and ((pedidos.situacao like '
-      //          + QuotedStr( 'Pendente')+' )                 '
-     //  +'        or (pedidos.situacao like '
-               + QuotedStr('Faturado')+' ))                     '
-      //+'       group by                                      '
-       //+'       produtos.codigo_prod                          '
-       //+'       ,status                     ' );
-        DMDados.FDQItensPed.Open();
-        LBQtd.Caption:=
-        DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
-        DMDados.FDQItensPed.Close();
+       DBGridSaidaProd.SelectedField.DataSet.
+       FieldByName('codigo_prod').AsString;
+       EdVenda.text :=
+       DBGridSaidaProd.SelectedField.DataSet.
+       FieldByName('preco_venda').AsString;
+       //estoque
+       quantidade :=
+       DBGridSaidaProd.SelectedField.DataSet.
+       FieldByName('quantidade').AsFloat;
+       LBQtd.Caption:= FloatToStr(quantidade);
      end
      else if (focoEdit.Equals('EdPesquisaCliente')) then
      begin

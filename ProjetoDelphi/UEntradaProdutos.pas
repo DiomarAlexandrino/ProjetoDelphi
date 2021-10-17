@@ -164,9 +164,9 @@ begin
           somaProduto:=
           DMDados.FDQProdutos.FieldByName('Quantidade').AsFloat +
           cdsTemporario.FieldByName('QTDE').AsFloat ;
-          ShowMessage( 'Quantidade ' + DMDados.FDQProdutos.FieldByName('Quantidade').AsString) ;
-          ShowMessage('Qtde '+cdsTemporario.FieldByName('QTDE').AsString) ;
-          ShowMessage(somaProduto.ToString) ;
+          //ShowMessage( 'Quantidade ' + DMDados.FDQProdutos.FieldByName('Quantidade').AsString) ;
+          //ShowMessage('Qtde '+cdsTemporario.FieldByName('QTDE').AsString) ;
+          //ShowMessage(somaProduto.ToString) ;
           DMDados.FDQProdutos.Edit;
           DMDados.FDQProdutos.ExecSQL(' UPDATE produtos SET quantidade = '
           +  QuotedStr(somaProduto.ToString)
@@ -183,37 +183,18 @@ begin
 end;
 
 procedure TFormEntProd.DBGridEntProdCellClick(Column: TColumn);
+var
+   quantidade: double;
 begin
        LBCodProd.Caption:=
        DBGridEntProd.SelectedField.DataSet.FieldByName('codigo_prod').AsString;
        EdCusto.text :=(
        DBGridEntProd.SelectedField.DataSet.FieldByName('custo_unitario').AsString);
-      //estoque
-      DMDados.FDQItensPed.SQL.Clear;
-      DMDados.FDQItensPed.SQL.Add(''
-       +'  select codigo_prod, itens_pedidos.status,      '
-       +'  sum (produtos.quantidade                       '
-       +'   - itens_pedidos.quantidade)                   '
-       +'   as estoque                                    '
-       +'   from produtos                                 '
-       +'   left join  itens_pedidos  on                  '
-       +'   itens_pedidos.produto = produtos.codigo_prod  '
-       +'   inner join  pedidos  on                       '
-       +'   itens_pedidos.pedido = pedidos.codigo_ped     '
-       +'   where status like                             '
-       +    QuotedStr( 'Não')
-       +'   and  codigo_prod like                         '
-       +    QuotedStr(LBCodProd.Caption)
-       +'   and ((pedidos.situacao like                   '
-       +    QuotedStr( 'Pendente')+' )                    '
-       +'    or (pedidos.situacao like '
-       +    QuotedStr('Faturado')+' ))                    '
-       +'   group by                                      '
-       +'   produtos.codigo_prod                          '
-       +'   ,status                     ' );
-        DMDados.FDQItensPed.Open();
-        LBQtd.Caption:=
-        DMDados.FDQItensPed.FieldByName('ESTOQUE').AsString;
+       //estoque
+       quantidade :=
+       DBGridEntProd.SelectedField.DataSet.
+       FieldByName('quantidade').AsFloat;
+       LBQtd.Caption:= FloatToStr(quantidade);
         DMDados.FDQItensPed.Close();
  end;
 

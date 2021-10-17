@@ -36,6 +36,7 @@ type
     Pedidos1: TMenuItem;
     Entradas1: TMenuItem;
     Sadas1: TMenuItem;
+    Button1: TButton;
     procedure Clientes1Click(Sender: TObject);
     procedure Produtos1Click(Sender: TObject);
     procedure EdPesquisaPedidoChange(Sender: TObject);
@@ -45,6 +46,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure Entradas1Click(Sender: TObject);
     procedure Sadas1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -61,6 +63,15 @@ implementation
 uses UCadastroClientes, UCadastroProdutos, UDMDados, UEntradaProdutos,
   USaidaProdutos;
 
+
+procedure TFormControlePedidos.Button1Click(Sender: TObject);
+begin
+      DMDados.FDQPedido.Close;
+      DMDados.FDQPedido.SQL.Clear;
+      DMDados.FDQPedido.SQL.Add('SELECT * '
+      +' from produtos  where quantidade <= 0');
+      DMDados.FDQPedido.Open();
+end;
 
 procedure TFormControlePedidos.Clientes1Click(Sender: TObject);
 begin
@@ -283,6 +294,7 @@ end;
 procedure TFormControlePedidos.RGPesquisaNomeClick(Sender: TObject);
 begin
       EdPesquisaPedido.Visible := true;
+      EdPesquisaPedido.Enabled:= true;
       lbpesquisa.Visible := true;
 end;
 

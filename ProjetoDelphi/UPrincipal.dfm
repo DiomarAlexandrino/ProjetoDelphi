@@ -61,7 +61,7 @@ object FormControlePedidos: TFormControlePedidos
       Top = 1
       Width = 296
       Height = 99
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -90,9 +90,9 @@ object FormControlePedidos: TFormControlePedidos
         Caption = 'Pesquisa por Nome'
         ImageIndex = 1
         object RGPesquisaNome: TRadioGroup
-          Left = -4
-          Top = -21
-          Width = 264
+          Left = 0
+          Top = -26
+          Width = 289
           Height = 95
           Items.Strings = (
             'b - Nome do Cliente')
@@ -100,6 +100,21 @@ object FormControlePedidos: TFormControlePedidos
           OnClick = RGPesquisaNomeClick
         end
       end
+    end
+    object Button1: TButton
+      Left = 14
+      Top = 56
+      Width = 149
+      Height = 25
+      Caption = 'i : Produtos s/Estoque'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Times New Roman'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 2
+      OnClick = Button1Click
     end
   end
   object Panel2: TPanel
@@ -136,6 +151,8 @@ object FormControlePedidos: TFormControlePedidos
       Height = 122
       Align = alBottom
       TabOrder = 1
+      ExplicitLeft = -39
+      ExplicitTop = -3
       object Label2: TLabel
         Left = 550
         Top = 6
@@ -237,8 +254,8 @@ object FormControlePedidos: TFormControlePedidos
     end
   end
   object MainMenu1: TMainMenu
-    Left = 24
-    Top = 56
+    Left = 168
+    Top = 48
     object formPrincipal: TMenuItem
       Caption = 'Cadastros'
       object Clientes1: TMenuItem

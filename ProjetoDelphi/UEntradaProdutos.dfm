@@ -28,9 +28,6 @@ object FormEntProd: TFormEntProd
       Align = alClient
       Caption = 'Panel5'
       TabOrder = 0
-      ExplicitLeft = 425
-      ExplicitWidth = 274
-      ExplicitHeight = 149
       object DBGridEntProd: TDBGrid
         Left = 1
         Top = 1
@@ -143,7 +140,6 @@ object FormEntProd: TFormEntProd
     Height = 111
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 200
     object PageControl1: TPageControl
       Left = 1
       Top = 1
@@ -158,8 +154,6 @@ object FormEntProd: TFormEntProd
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 857
-      ExplicitHeight = 113
       object Compra: TTabSheet
         Caption = 'Itens do Pedido'
         object Label2: TLabel
@@ -300,8 +294,6 @@ object FormEntProd: TFormEntProd
       Height = 212
       Align = alRight
       TabOrder = 1
-      ExplicitLeft = 259
-      ExplicitTop = 25
       object Label1: TLabel
         Left = -97
         Top = 60
